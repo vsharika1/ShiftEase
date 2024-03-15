@@ -1,0 +1,84 @@
+diff --git a/dist/index.d.cts b/dist/index.d.cts
+index 700cf51d5f7582b2849ae3b754faa8eaa561085e..b9ac694676c3061dbed699f07335ec43b54ae2be 100644
+--- a/dist/index.d.cts
++++ b/dist/index.d.cts
+@@ -1,7 +1,13 @@
+-import { Observable } from 'rxjs';
+ import { Readable } from 'stream';
+ import * as colorette from 'colorette';
+ 
++interface ObservableLike<T> {
++    subscribe: T;
++    next: any;
++    error: any;
++    complete: any;
++}
++
+ /**
+  * Indicates an UNICODE characters is coming up.
+  */
+@@ -151,12 +157,7 @@ declare class EventManager<Event extends string = string, Map extends Partial<Re
+  * Tests to see if the object is an RxJS {@link Observable}
+  * @param obj the object to test
+  */
+-declare function isObservable<T>(obj: any): obj is {
+-    subscribe: T;
+-    next: any;
+-    error: any;
+-    complete: any;
+-};
++declare function isObservable<T>(obj: any): obj is ObservableLike<T>;
+ 
+ declare function isUnicodeSupported(): boolean;
+ 
+@@ -1340,7 +1341,7 @@ interface ListrTask<Ctx = ListrContext, Renderer extends ListrRendererFactory =
+ /**
+  * Result of the processed task can be any of the supported types.
+  */
+-type ListrTaskResult<Ctx> = string | Promise<any> | Listr<Ctx, ListrRendererValue, ListrRendererValue> | Readable | NodeJS.ReadableStream | Observable<any>;
++type ListrTaskResult<Ctx> = string | Promise<any> | Listr<Ctx, ListrRendererValue, ListrRendererValue> | Readable | NodeJS.ReadableStream | ObservableLike<any>;
+ /**
+  * The callback function from the user that defines the task.
+  */
+diff --git a/dist/index.d.ts b/dist/index.d.ts
+index 700cf51d5f7582b2849ae3b754faa8eaa561085e..b9ac694676c3061dbed699f07335ec43b54ae2be 100644
+--- a/dist/index.d.ts
++++ b/dist/index.d.ts
+@@ -1,7 +1,13 @@
+-import { Observable } from 'rxjs';
+ import { Readable } from 'stream';
+ import * as colorette from 'colorette';
+ 
++interface ObservableLike<T> {
++    subscribe: T;
++    next: any;
++    error: any;
++    complete: any;
++}
++
+ /**
+  * Indicates an UNICODE characters is coming up.
+  */
+@@ -151,12 +157,7 @@ declare class EventManager<Event extends string = string, Map extends Partial<Re
+  * Tests to see if the object is an RxJS {@link Observable}
+  * @param obj the object to test
+  */
+-declare function isObservable<T>(obj: any): obj is {
+-    subscribe: T;
+-    next: any;
+-    error: any;
+-    complete: any;
+-};
++declare function isObservable<T>(obj: any): obj is ObservableLike<T>;
+ 
+ declare function isUnicodeSupported(): boolean;
+ 
+@@ -1340,7 +1341,7 @@ interface ListrTask<Ctx = ListrContext, Renderer extends ListrRendererFactory =
+ /**
+  * Result of the processed task can be any of the supported types.
+  */
+-type ListrTaskResult<Ctx> = string | Promise<any> | Listr<Ctx, ListrRendererValue, ListrRendererValue> | Readable | NodeJS.ReadableStream | Observable<any>;
++type ListrTaskResult<Ctx> = string | Promise<any> | Listr<Ctx, ListrRendererValue, ListrRendererValue> | Readable | NodeJS.ReadableStream | ObservableLike<any>;
+ /**
+  * The callback function from the user that defines the task.
+  */

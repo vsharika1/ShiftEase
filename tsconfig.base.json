@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    "lib": ["ESNext"],
+    "target": "ESNext",
+    "module": "ESNext",
+    "esModuleInterop": true,
+
+    /* Bundler mode */
+    "composite": true,
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "verbatimModuleSyntax": true,
+    "jsx": "react-jsx",
+    "isolatedModules": true,
+
+    /* Linting */
+    "strict": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+
+    "noErrorTruncation": true,
+
+    "outDir": "node_modules/.cache/.tsc_build",
+
+    // All paths must be in base config as child paths do not merge with parent
+    "paths": {
+      "~/*": ["./app/*"]
+    }
+  }
+}
