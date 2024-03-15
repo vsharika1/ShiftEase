@@ -16,6 +16,7 @@
     "tailwind.config.ts",
     "tools",
     "./tsconfig.json",
-    "prisma"
+    "prisma",
+    ".storybook/main.ts"
   ]
 }

@@ -1,7 +1,8 @@
 {
   "compilerOptions": {
     "lib": ["ESNext", "DOM", "DOM.Iterable"],
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "strictNullChecks": true,
   },
   "include": ["./env.d.ts", "app"],
   "extends": "./tsconfig.base.json",
