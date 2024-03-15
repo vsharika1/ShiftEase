@@ -3,7 +3,7 @@
     "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "skipLibCheck": true
   },
-  "include": ["./env.d.ts", "app"],
+  "include": ["./env.d.ts", "app", ".storybook/preview.ts", "stories"],
   "extends": "./tsconfig.base.json",
   "references": [
     { "path": "./tsconfig.tooling.json" },
