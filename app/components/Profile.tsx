@@ -61,7 +61,7 @@ export default function Profile({ user_id, email, first_name, last_name, contact
               name="firstName"
               value={first_name}
               onChange={handleChange}
-              className="text-gray-800 w-full"
+              className="text-gray-800 w-full rounded-lg"
             />
           ) : (
             <div className="text-gray-800">{userProfile.first_name}</div>
@@ -75,7 +75,7 @@ export default function Profile({ user_id, email, first_name, last_name, contact
               name="lastName"
               value={last_name}
               onChange={handleChange}
-              className="text-gray-800 w-full"
+              className="text-gray-800 w-full rounded-lg"
             />
           ) : (
             <div className="text-gray-800">{userProfile.last_name}</div>
@@ -89,7 +89,7 @@ export default function Profile({ user_id, email, first_name, last_name, contact
               name="email"
               value={email}
               onChange={handleChange}
-              className="text-gray-800 w-full"
+              className="text-gray-800 w-full rounded-lg"
             />
           ) : (
             <div className="text-gray-800">{userProfile.email}</div>
@@ -104,7 +104,7 @@ export default function Profile({ user_id, email, first_name, last_name, contact
               value={contact_number}
               onChange={handleChange}
               pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
-              className="text-gray-800 w-full"
+              className="text-gray-800 w-full rounded-lg"
             />
           ) : (
             <div className="text-gray-800">{userProfile.contact_number}</div>
