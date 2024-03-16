@@ -11,6 +11,7 @@ on:
 jobs:
   cache-dependencies:
     runs-on: ubuntu-latest
+    timeout-minutes: 2
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -23,5 +24,3 @@ jobs:
           cache: 'pnpm'
       - name: Install dependencies
         run: pnpm install
-      - name: Pre-bundle dependencies
-        run: pnpm exec vite optimize
