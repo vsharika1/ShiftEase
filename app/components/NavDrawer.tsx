@@ -8,7 +8,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
 
-import { ManagerNavItems, EmployeeNavItems } from './NavItems';
+import { EmployeeNavItems, ManagerNavItems } from './NavItems';
 
 const drawerWidth = 300;
 
@@ -17,7 +17,6 @@ interface Props {
 }
 
 export default function NavDrawer({ isManager }: Props) {
-
   return (
     <Drawer
       sx={{
@@ -39,9 +38,7 @@ export default function NavDrawer({ isManager }: Props) {
         </Typography>
       </div>
       <Divider />
-      <List>
-        {isManager ? ManagerNavItems : EmployeeNavItems}
-      </List>
+      <List>{isManager ? ManagerNavItems : EmployeeNavItems}</List>
       <Divider />
       <List sx={{ marginTop: 'auto', paddingBottom: 2 }}>
         {/* Profile Button */}

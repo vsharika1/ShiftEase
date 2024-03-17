@@ -8,8 +8,8 @@ const meta: Meta<typeof DaySchedule> = {
     assignedShifts: {
       start_time: new Date('2024-03-16T08:00:00'),
       end_time: new Date('2024-03-16T15:30:00'),
-    }
-  }
+    },
+  },
 };
 export default meta;
 

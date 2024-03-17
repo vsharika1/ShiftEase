@@ -1,22 +1,34 @@
 import { useState, type ChangeEvent } from 'react';
 
+import CancelIcon from '@mui/icons-material/Cancel';
 import EditIcon from '@mui/icons-material/Edit';
 import SaveIcon from '@mui/icons-material/Save';
-import CancelIcon from '@mui/icons-material/Cancel';
 
 interface Props {
-    user_id: number,
-    email: string,
-    first_name: string,
-    last_name: string,
-    contact_number: string,
-    role: {
-        role_name: string,
-    },
+  user_id: number;
+  email: string;
+  first_name: string;
+  last_name: string;
+  contact_number: string;
+  role: {
+    role_name: string;
+  };
 }
 
-export default function Profile({ user_id, email, first_name, last_name, contact_number, role, }: Props) {
-    const [userProfile, setUserProfile] = useState({ email, first_name, last_name, contact_number });
+export default function Profile({
+  user_id,
+  email,
+  first_name,
+  last_name,
+  contact_number,
+  role,
+}: Props) {
+  const [userProfile, setUserProfile] = useState({
+    email,
+    first_name,
+    last_name,
+    contact_number,
+  });
   const [isEditing, setIsEditing] = useState(false);
 
   const handleEditClick = () => setIsEditing(true);

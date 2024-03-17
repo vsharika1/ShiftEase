@@ -11,9 +11,9 @@ const meta: Meta<typeof Profile> = {
     last_name: 'Doe',
     contact_number: '123-456-7890',
     role: {
-        role_name: 'Employee',
+      role_name: 'Employee',
     },
-  }
+  },
 };
 export default meta;
 

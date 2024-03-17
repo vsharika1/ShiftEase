@@ -6,7 +6,7 @@ const meta: Meta<typeof NavDrawer> = {
   component: NavDrawer,
   args: {
     isManager: true,
-  }
+  },
 };
 export default meta;
 

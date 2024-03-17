@@ -2,7 +2,18 @@
 module.exports = {
   root: true,
   env: { node: true, es2024: true },
-  extends: ['eslint:recommended', './.eslintrc.import.cjs', './.eslintrc.unicorn.cjs', 'plugin:@typescript-eslint/strict-type-checked', 'plugin:@typescript-eslint/stylistic-type-checked', 'plugin:react/recommended', 'plugin:react/jsx-runtime', 'plugin:react-hooks/recommended', 'prettier', 'plugin:storybook/recommended'],
+  extends: [
+    'eslint:recommended',
+    './.eslintrc.import.cjs',
+    './.eslintrc.unicorn.cjs',
+    'plugin:@typescript-eslint/strict-type-checked',
+    'plugin:@typescript-eslint/stylistic-type-checked',
+    'plugin:react/recommended',
+    'plugin:react/jsx-runtime',
+    'plugin:react-hooks/recommended',
+    'prettier',
+    'plugin:storybook/recommended',
+  ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     // project: ['./tsconfig.json', './tsconfig.*.json'],
