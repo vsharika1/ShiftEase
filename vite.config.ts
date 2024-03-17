@@ -10,7 +10,7 @@ import tsconfigPaths from 'vite-tsconfig-paths';
 installGlobals();
 
 const config: UserConfigExport = {
-  plugins: [process.env.IS_STORYBOOK ? remix() : react(), tsconfigPaths()],
+  plugins: [env.STORYBOOK ? react() : remix(), tsconfigPaths()],
   esbuild: {
     supported: {
       'top-level-await': true,

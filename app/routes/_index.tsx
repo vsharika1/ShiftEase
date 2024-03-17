@@ -1,3 +1,5 @@
+import HelloWorld from '~/components/HelloWorld';
+
 export default function Index() {
-  return <h1>hello world two</h1>;
+  <HelloWorld>one</HelloWorld>;
 }
