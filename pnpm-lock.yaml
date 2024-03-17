@@ -5,7 +5,7 @@ settings:
   excludeLinksFromLockfile: false
 
 overrides:
-  react-hook-form: ^7.51.0
+  react-hook-form: ^7.51.1
 
 patchedDependencies:
   listr2@8.0.2:
@@ -21,7 +21,7 @@ dependencies:
     version: 11.11.0(@emotion/react@11.11.4)(@types/react@18.2.66)(react@18.2.0)
   '@hookform/resolvers':
     specifier: ^3.3.4
-    version: 3.3.4(react-hook-form@7.51.0)
+    version: 3.3.4(react-hook-form@7.51.1)
   '@mui/icons-material':
     specifier: ^5.15.13
     version: 5.15.13(@mui/material@5.15.13)(@types/react@18.2.66)(react@18.2.0)
@@ -56,11 +56,11 @@ dependencies:
     specifier: ^18.2.0
     version: 18.2.0(react@18.2.0)
   react-hook-form:
-    specifier: ^7.51.0
-    version: 7.51.0(react@18.2.0)
+    specifier: ^7.51.1
+    version: 7.51.1(react@18.2.0)
   remix-hook-form:
     specifier: ^4.2.0
-    version: 4.2.0(@remix-run/react@2.8.1)(react-dom@18.2.0)(react-hook-form@7.51.0)(react@18.2.0)
+    version: 4.2.0(@remix-run/react@2.8.1)(react-dom@18.2.0)(react-hook-form@7.51.1)(react@18.2.0)
   ts-luxon:
     specifier: ^4.5.2
     version: 4.5.2
@@ -2572,12 +2572,12 @@ packages:
     resolution: {integrity: sha512-9TANp6GPoMtYzQdt54kfAyMmz1+osLlXdg2ENroU7zzrtflTLrrC/lgrIfaSe+Wu0b89GKccT7vxXA0MoAIO+Q==}
     dev: false
 
-  /@hookform/resolvers@3.3.4(react-hook-form@7.51.0):
+  /@hookform/resolvers@3.3.4(react-hook-form@7.51.1):
     resolution: {integrity: sha512-o5cgpGOuJYrd+iMKvkttOclgwRW86EsWJZZRC23prf0uU2i48Htq4PuT73AVb9ionFyZrwYEITuOFGF+BydEtQ==}
     peerDependencies:
-      react-hook-form: ^7.51.0
+      react-hook-form: ^7.51.1
     dependencies:
-      react-hook-form: 7.51.0(react@18.2.0)
+      react-hook-form: 7.51.1(react@18.2.0)
     dev: false
 
   /@humanwhocodes/config-array@0.11.14:
@@ -10507,8 +10507,8 @@ packages:
       react-is: 18.1.0
     dev: true
 
-  /react-hook-form@7.51.0(react@18.2.0):
-    resolution: {integrity: sha512-BggOy5j58RdhdMzzRUHGOYhSz1oeylFAv6jUSG86OvCIvlAvS7KvnRY7yoAf2pfEiPN7BesnR0xx73nEk3qIiw==}
+  /react-hook-form@7.51.1(react@18.2.0):
+    resolution: {integrity: sha512-ifnBjl+kW0ksINHd+8C/Gp6a4eZOdWyvRv0UBaByShwU8JbVx5hTcTWEcd5VdybvmPTATkVVXk9npXArHmo56w==}
     engines: {node: '>=12.22.0'}
     peerDependencies:
       react: ^16.8.0 || ^17 || ^18
@@ -10792,18 +10792,18 @@ packages:
       unified: 10.1.2
     dev: true
 
-  /remix-hook-form@4.2.0(@remix-run/react@2.8.1)(react-dom@18.2.0)(react-hook-form@7.51.0)(react@18.2.0):
+  /remix-hook-form@4.2.0(@remix-run/react@2.8.1)(react-dom@18.2.0)(react-hook-form@7.51.1)(react@18.2.0):
     resolution: {integrity: sha512-fUxA8tDZPexRuqyfGDSlSwB6um1Tr1Juo6X+sRKhJpVABV83+NUb5bmZwrrbRdYF7Wu9knlUYcpFJjPiaHbmGw==}
     peerDependencies:
       '@remix-run/react': ^2.0.0
       react: ^18.2.0
       react-dom: ^18.2.0
-      react-hook-form: ^7.51.0
+      react-hook-form: ^7.51.1
     dependencies:
       '@remix-run/react': 2.8.1(react-dom@18.2.0)(react@18.2.0)(typescript@5.4.2)
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
-      react-hook-form: 7.51.0(react@18.2.0)
+      react-hook-form: 7.51.1(react@18.2.0)
     dev: false
 
   /require-like@0.1.2:
