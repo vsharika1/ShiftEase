@@ -22,7 +22,7 @@ jobs:
           node-version-file: 'package.json'
           cache: 'pnpm'
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --frozen-lockfile
       - name: Lint with TypeScript
         uses: EPMatt/reviewdog-action-tsc@v1
         with:
