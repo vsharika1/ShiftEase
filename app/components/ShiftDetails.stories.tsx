@@ -2,28 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import ShiftDetails from './ShiftDetails';
 
-interface ShiftDetailsProps {
-  shifts: Shift[];
-}
-
-interface User {
-  user_id: number;
-  email: string;
-  first_name?: string;
-  last_name?: string;
-  contact_number?: string;
-}
-
-interface Shift {
-  shift_id: number;
-  start_time: Date;
-  end_time: Date;
-  assigned_user_id: number;
-  assignedUser: User;
-  is_approved: boolean;
-}
-
-const meta: Meta<ShiftDetailsProps> = {
+const meta: Meta<typeof ShiftDetails> = {
   title: 'Components/ShiftDetails',
   component: ShiftDetails,
   args: {
@@ -42,13 +21,27 @@ const meta: Meta<ShiftDetailsProps> = {
         },
         is_approved: true,
       },
+      {
+        shift_id: 2,
+        start_time: new Date('2024-03-17T09:00:00Z'),
+        end_time: new Date('2024-03-17T17:00:00Z'),
+        assigned_user_id: 2,
+        assignedUser: {
+          user_id: 2,
+          email: 'steve.jobs@example.com',
+          first_name: 'Steve',
+          last_name: 'Jobs',
+          contact_number: '555-1234',
+        },
+        is_approved: true,
+      },
       // ... more shifts can be added here
     ],
   },
 };
 export default meta;
 
-type Story = StoryObj<ShiftDetailsProps>;
+type Story = StoryObj<typeof ShiftDetails>;
 
 export const Default: Story = {
   render: (args) => <ShiftDetails {...args} />,
