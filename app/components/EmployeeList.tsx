@@ -1,5 +1,7 @@
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import InfoIcon from '@mui/icons-material/Info';
+import Tooltip from '@mui/material/Tooltip';
 
 interface User {
   user_id: number;
@@ -15,6 +17,11 @@ interface User {
 interface EmployeeListProps {
   users: User[];
 }
+
+const handleMoreInfo = (userId: number) => {
+  console.log('More info for user', userId);
+  // Implement more info logic here, such as displaying a modal or redirecting to a detailed view
+};
 
 const handleEdit = (userId: number) => {
   console.log('Edit user', userId);
@@ -89,18 +96,30 @@ export default function EmployeeList({ users }: EmployeeListProps) {
                     className="border-b border-gray-200 bg-white text-sm flex justify-start items-center"
                     style={{ padding: '6px' }}
                   >
-                    <button
-                      onClick={() => handleEdit(user.user_id)}
-                      className="text-blue-500 hover:text-blue-700 p-2 mr-2"
-                    >
-                      <EditIcon fontSize="small" />
-                    </button>
-                    <button
-                      onClick={() => handleDelete(user.user_id)}
-                      className="text-red-500 hover:text-red-700 p-2"
-                    >
-                      <DeleteIcon fontSize="small" />
-                    </button>
+                    <Tooltip title="More Info">
+                      <button
+                        onClick={() => handleMoreInfo(user.user_id)}
+                        className="text-gray-500 hover:text-gray-700 p-2 mr-2"
+                      >
+                        <InfoIcon fontSize="small" />
+                      </button>
+                    </Tooltip>
+                    <Tooltip title="Edit">
+                      <button
+                        onClick={() => handleEdit(user.user_id)}
+                        className="text-blue-500 hover:text-blue-700 p-2 mr-2"
+                      >
+                        <EditIcon fontSize="small" />
+                      </button>
+                    </Tooltip>
+                    <Tooltip title="Delete">
+                      <button
+                        onClick={() => handleDelete(user.user_id)}
+                        className="text-red-500 hover:text-red-700 p-2"
+                      >
+                        <DeleteIcon fontSize="small" />
+                      </button>
+                    </Tooltip>
                   </td>
                 </tr>
               ))}
