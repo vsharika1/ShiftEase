@@ -1,9 +1,11 @@
+import { randomBytes } from 'node:crypto';
 import { PassThrough } from 'node:stream';
 
 import { renderToPipeableStream } from 'react-dom/server';
 
 import type {
   ActionFunctionArgs,
+  HandleDataRequestFunction,
   HandleDocumentRequestFunction,
   HandleErrorFunction,
   LoaderFunctionArgs,
@@ -11,6 +13,7 @@ import type {
 import { createReadableStreamFromReadable } from '@remix-run/node';
 import { RemixServer, isRouteErrorResponse } from '@remix-run/react';
 
+import builder from 'content-security-policy-builder';
 import { isbot } from 'isbot';
 
 import { NonceProvider } from './nonce-provider';
@@ -27,15 +30,26 @@ const handleError: HandleErrorFunction = (
   console.error(error);
 };
 
+const handleDataRequest: HandleDataRequestFunction = (response) => {
+  setSecurityHeaders(response.headers, 'data');
+  return response;
+};
+
 const handleRequest: HandleDocumentRequestFunction = (
   request,
   responseStatusCode,
   responseHeaders,
   remixContext,
-  loadContext,
 ) => {
   const isBot = isbot(request.headers.get('user-agent'));
-  const cspNonce = loadContext.cspNonce;
+  const cspNonce = randomBytes(16).toString('base64');
+
+  setSecurityHeaders(
+    responseHeaders,
+    'document',
+    cspNonce,
+    new URL(request.url),
+  );
 
   return new Promise((resolve, reject) => {
     let shellRendered = false;
@@ -91,4 +105,56 @@ const handleRequest: HandleDocumentRequestFunction = (
   });
 };
 
-export { handleRequest as default, handleError };
+function setSecurityHeaders(
+  resHeaders: Headers,
+  ...args: ['data'] | ['document', string, URL]
+) {
+  const [requestType, cspNonce, reqUrl] = args;
+
+  const inViteDevMode = import.meta.env.MODE === 'development';
+
+  resHeaders.set('X-Content-Type-Options', 'nosniff');
+  resHeaders.set('X-Permitted-Cross-Domain-Policies', 'none');
+  resHeaders.set(
+    'Strict-Transport-Security',
+    'max-age=31536000; includeSubDomains',
+  );
+
+  if (requestType !== 'document') return;
+
+  resHeaders.set('Cross-Origin-Resource-Policy', 'same-origin');
+  resHeaders.set('Cross-Origin-Opener-Policy', 'same-origin');
+  resHeaders.set('Origin-Agent-Cluster', '?1');
+  resHeaders.set('Referrer-Policy', 'same-origin');
+  resHeaders.set('X-Download-Options', 'noopen');
+  resHeaders.set('X-Frame-Options', 'SAMEORIGIN');
+  resHeaders.set('X-XSS-Protection', '0');
+
+  resHeaders.set(
+    'Content-Security-Policy-Report-Only',
+    builder({
+      directives: {
+        defaultSrc: "'self'",
+        baseUri: "'self'",
+        blockAllMixedContent: true,
+        fontSrc: ["'self'", 'https:', 'data:'],
+        frameAncestors: "'none'",
+        imgSrc: ["'self'", 'data:'],
+        objectSrc: "'none'",
+        frameSrc: "'none'",
+        childSrc: "'self'",
+        scriptSrcAttr: "'none'",
+        styleSrc: ["'self'", 'https:', "'unsafe-inline'"],
+        upgradeInsecureRequests: true,
+        formAction: "'self'",
+        scriptSrc: ["'strict-dynamic'", `'nonce-${cspNonce}'`],
+        // @ts-expect-error: TS is stupid
+        connectSrc: ["'self'", inViteDevMode && `ws://${reqUrl.host}`].filter(
+          Boolean,
+        ),
+      },
+    }),
+  );
+}
+
+export { handleRequest as default, handleDataRequest, handleError };
