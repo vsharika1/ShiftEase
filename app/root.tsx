@@ -76,7 +76,7 @@ export function ErrorBoundary() {
     <div className="flex items-center flex-col border-2 rounded-lg border-red-500 p-16">
       <h1 className="text-red-500 font-black">x_x</h1>
       <p className="uppercase font-bold">
-        {!isRenderError && `${error.status} ${error.statusText}`}
+        {!isRenderError && `${error.status.toString()} ${error.statusText}`}
       </p>
     </div>
   );
