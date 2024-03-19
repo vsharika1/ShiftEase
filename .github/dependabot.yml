@@ -3,7 +3,45 @@
 
 version: 2
 updates:
-  - package-ecosystem: 'npm' # See documentation for possible values
+  # Maintain dependencies for GitHub Actions
+  - package-ecosystem: 'github-actions'
+    # Workflow files stored in the default location of `.github/workflows`. (You don't need to specify `/.github/workflows` for `directory`. You can use `directory: "/"`.)
+    directory: '/'
+    schedule:
+      interval: 'daily'
+  - package-ecosystem: 'npm'
     directory: '/' # Location of package manifests
     schedule:
       interval: 'daily'
+    groups:
+      minor-and-patch:
+        applies-to: version-updates
+        update-types:
+          - 'minor'
+          - 'patch'
+      security:
+        applies-to: security-updates
+        patterns:
+          - '*'
+      react:
+        applies-to: version-updates
+        patterns:
+          - 'react'
+          - 'react-dom'
+          - '@types/react'
+          - '@types/react-dom'
+      remix-run:
+        applies-to: version-updates
+        patterns:
+          - '@remix-run/*'
+      storybook:
+        applies-to: version-updates
+        patterns:
+          - '@storybook/*'
+          - '@chromatic-com/*'
+          - 'eslint-plugin-storybook'
+      postcss:
+        applies-to: version-updates
+        patterns:
+          - 'postcss*'
+          - 'autoprefixer'
