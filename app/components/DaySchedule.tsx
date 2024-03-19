@@ -41,8 +41,8 @@ export default function DaySchedule({ assignedShifts }: Props) {
         <div
           className="absolute top-0 bg-green-500 text-black flex items-center justify-center"
           style={{
-            left: `${leftOffset}%`,
-            width: `${widthPercent}%`,
+            left: `${leftOffset.toString()}%`,
+            width: `${widthPercent.toString()}%`,
             height: '100%',
           }}
         >
@@ -59,8 +59,8 @@ export default function DaySchedule({ assignedShifts }: Props) {
         <div
           className="absolute bottom-0 w-full flex px-2"
           style={{
-            left: `${leftOffset}%`,
-            width: `${widthPercent}%`,
+            left: `${leftOffset.toString()}%`,
+            width: `${widthPercent.toString()}%`,
             display: 'flex',
             justifyContent: 'space-between',
             height: '20px',
