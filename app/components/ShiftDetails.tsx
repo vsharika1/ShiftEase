@@ -1,56 +1,67 @@
-interface User {
-  user_id: number;
-  email: string;
-  first_name?: string;
-  last_name?: string;
-  contact_number?: string;
+import type { Prisma } from '@prisma/client';
+import * as luxon from 'ts-luxon';
+
+type Shift = Prisma.ShiftGetPayload<{
+  // include: { assignedTo: false; createdBy: false };
+}>;
+
+// TODO: remove when auth is implemented
+// See: https://auth0.github.io/node-auth0/interfaces/management.GetUsers200ResponseOneOfInner.html
+interface Auth0User {
+  user_id: string;
+  nickname: string;
+  phone_number: string;
 }
 
-interface Shift {
-  shift_id: number;
-  start_time: Date;
-  end_time: Date;
-  assigned_user_id: number;
-  assignedUser: User;
-  is_approved: boolean;
+interface Props {
+  shift: Shift;
+  users: Auth0User[];
+  relativeBase?: Date;
 }
 
-interface ShiftDetailsProps {
-  shifts: Shift[];
-}
+const LUXON_BASE_OPTS = { setZone: true } as const;
 
-export default function ShiftDetails({ shifts }: ShiftDetailsProps) {
+export default function ShiftDetails({ shift, users, relativeBase }: Props) {
+  const base = relativeBase
+    ? luxon.DateTime.fromJSDate(relativeBase, LUXON_BASE_OPTS)
+    : undefined;
+  const startDate = luxon.DateTime.fromJSDate(shift.start, LUXON_BASE_OPTS);
+  const endDate = luxon.DateTime.fromJSDate(shift.end, LUXON_BASE_OPTS);
+  const interval = luxon.Interval.fromDateTimes(startDate, endDate);
+  const updatedAt = luxon.DateTime.fromJSDate(shift.updatedAt, LUXON_BASE_OPTS);
+
   return (
-    <div className="container mx-auto p-4">
-      <div className="flex flex-wrap -m-2">
-        {shifts.map((shift) => (
-          <div key={shift.shift_id} className="p-2 w-full md:w-1/2 lg:w-1/3">
-            <div className="bg-white shadow-lg rounded-lg overflow-hidden h-full">
-              <div className="p-4">
-                <p className="text-gray-800 text-base mb-2">
-                  Date: {shift.start_time.toLocaleDateString()} -{' '}
-                  {shift.end_time.toLocaleDateString()}
-                </p>
-                <p className="text-gray-800 text-base mb-2">
-                  Shift Assignee: {shift.assignedUser.first_name}{' '}
-                  {shift.assignedUser.last_name}
-                </p>
-                <p className="text-gray-800 text-base mb-2">Contact Info:</p>
-                <p className="text-gray-800 text-base mb-2">
-                  Email: {shift.assignedUser.email}
-                </p>
-                <p className="text-gray-800 text-base mb-2">
-                  Phone: {shift.assignedUser.contact_number}
-                </p>
-                <p className="text-gray-800 text-base mb-2">
-                  Timing: {shift.start_time.toLocaleTimeString()} -{' '}
-                  {shift.end_time.toLocaleTimeString()}
-                </p>
-              </div>
-            </div>
-          </div>
-        ))}
+    <div className="px-6 py-6 text-slate-700 flex flex-col items-stretch">
+      <div className="text-4xl font-medium first-letter:uppercase mb-3 text-slate-800">
+        <div className="text-lg whitespace-nowrap">
+          {startDate.toRelativeCalendar({ base })}
+        </div>
+        for{' '}
+        {interval.toDuration().shiftTo('hours', 'minutes').toHuman({
+          maximumFractionDigits: 0,
+          listStyle: 'narrow',
+          unitDisplay: 'long',
+        })}
       </div>
+      <div className="text-xs font-medium text-slate-400">
+        {interval.toLocaleString(luxon.DateTime.DATETIME_SHORT)}
+      </div>
+      <div className="text-xs font-medium text-slate-400">
+        Updated {updatedAt.toRelative({ base })}
+      </div>
+      {users.length && (
+        <div className="mt-6">
+          <div className="uppercase text-sm font-semibold ">Workers</div>
+          <ul className="border-t border-slate-200 pt-2">
+            {users.map((user) => (
+              <li key={user.user_id} className="py-2 flex gap-4">
+                <div className="grow">{user.nickname}</div>
+                <div>{user.phone_number}</div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   );
 }
