@@ -51,7 +51,6 @@ export const Layout: RemixRoute['Layout'] = function Layout({ children }) {
           layoutScroll
           className="max-w-full w-[64rem] mx-auto font-sans h-[100vh] flex flex-col justify-center"
         >
-          <h1>Hello World!</h1>
           {children}
         </motion.div>
         <ScrollRestoration nonce={nonce} />

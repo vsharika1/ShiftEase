@@ -14,7 +14,9 @@ export interface DefinedRouteHandle {
 
 export type RouteHandle = DefinedRouteHandle | undefined;
 
-export type RemixRoute = Object.Assign<
+export type RemixRouteModule = Object.Assign<
   object,
   [ClientRouteModule, Object.Exclude<ServerRouteModule, ClientRouteModule>]
 >;
+
+export type RemixRoute = Required<RemixRouteModule>;

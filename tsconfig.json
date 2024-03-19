@@ -4,7 +4,13 @@
     "skipLibCheck": true,
     "strictNullChecks": true
   },
-  "include": ["./env.d.ts", "app", ".storybook/preview.ts", "stories"],
+  "include": [
+    "./env.d.ts",
+    "app",
+    ".storybook/preview.ts",
+    "stories",
+    "app/**/.server/**/*"
+  ],
   "extends": "./tsconfig.base.json",
   "references": [
     { "path": "./tsconfig.tooling.json" },
