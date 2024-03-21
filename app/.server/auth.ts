@@ -5,24 +5,23 @@ import { Auth0Strategy, type Auth0Profile } from 'remix-auth-auth0';
 
 import { prisma } from '~/.server/db';
 
-// TODO: set using env
-const APP_NAME = 'CMPT372-Project';
-const OAUTH_CLIENTID = '6DF1LPKvK4aHzt0qzEBmQ7PmOXLryy0Q';
-const LOGOUT_REDIRECT_PATHNAME = '/signed-out';
-const AUTH0_URL = new URL('https://dev-clqbtth7sknk4r0a.us.auth0.com/');
-const CALLBACK_REDIRECT_KEY = 'redirect-to';
+if (
+  !process.env.AUTH0_ORIGIN ||
+  !process.env.AUTH0_CLIENT_SECRET ||
+  (process.env.NODE_ENV === 'production' && !process.env.APP_ORIGIN)
+) {
+  throw new Error('Missing required environment variables for auth.');
+}
 
-/**
- * CRITICAL WARNING!!!!!!!!!!!!
- * CRITICAL WARNING!!!!!!!!!!!!
- * CRITICAL WARNING!!!!!!!!!!!!
- * CRITICAL WARNING!!!!!!!!!!!!
- * CRITICAL WARNING!!!!!!!!!!!!
- * CRITICAL WARNING!!!!!!!!!!!!
- * TODO: CHANGE THIS CLIENT SECRET BEFORE DEPLOYING TO PRODUCTION AND DON'T PUSH THE NEW SECRET TO GITHUB
- */
-const AUTH0_CLIENT_SECRET =
-  'syBl9I6YxvJ6UUqcGneC7yZ9KDTEgjoxUAd-JhJXVBx5_lrTJPhcKy90blk7qWAt';
+const APP_NAME = 'CMPT372-Project';
+const APP_ORIGIN = process.env.APP_ORIGIN ?? 'http://localhost:5173';
+const OAUTH_CLIENTID = '6DF1LPKvK4aHzt0qzEBmQ7PmOXLryy0Q';
+const AUTH0_URL = new URL(process.env.AUTH0_ORIGIN);
+const AUTH0_CLIENT_SECRET = process.env.AUTH0_CLIENT_SECRET;
+
+const OAUTH_CALLLBACK_PATHNAME = '/auth0/callback';
+const LOGOUT_REDIRECT_PATHNAME = '/signed-out';
+const CALLBACK_REDIRECT_KEY = 'redirect-to';
 
 async function userFromProfile(profile: Auth0Profile) {
   const id = profile.id;
@@ -38,7 +37,7 @@ async function userFromProfile(profile: Auth0Profile) {
 
 const auth0Strategy = new Auth0Strategy(
   {
-    callbackURL: 'http://localhost:5173/auth0/callback',
+    callbackURL: new URL(OAUTH_CALLLBACK_PATHNAME, APP_ORIGIN).href,
     clientID: OAUTH_CLIENTID,
     clientSecret: AUTH0_CLIENT_SECRET,
     domain: AUTH0_URL.host,
