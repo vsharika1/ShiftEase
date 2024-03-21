@@ -8,10 +8,10 @@
     "dev": "remix vite:dev",
     "start": "remix-serve ./build/server/index.js",
     "lint": "node tools/lint-cli --typescript --eslint",
-    "postinstall": "prisma generate",
     "storybook": "cross-env STORYBOOK=true storybook dev -p 6006 --no-open",
     "build-storybook": "storybook build",
-    "prepare": "husky"
+    "prepare": "husky",
+    "gcp-build": "pnpm run build && prisma generate"
   },
   "packageManager": "pnpm@8.15.5",
   "dependencies": {

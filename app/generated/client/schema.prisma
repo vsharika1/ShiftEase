@@ -1,0 +1,81 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../app/generated/client"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id             String             @id
+  role           String             @default("user")
+  assignedShifts ShiftAssignment[]
+  availability   Availability[]
+  initiatedSwaps ShiftSwapRequest[]
+  createdShifts  Shift[]
+}
+
+model ShiftAssignment {
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  shiftId String
+  shift   Shift  @relation(fields: [shiftId], references: [id])
+
+  createdAt DateTime @default(now())
+
+  // TODO: better names?
+  swapRequestCurrents ShiftSwapRequest[] @relation("CurrentAssignment")
+  swapRequestWanteds  ShiftSwapRequest[] @relation("WantedAssignment")
+
+  @@id(name: "id", [userId, shiftId])
+}
+
+model Shift {
+  id String @id @default(uuid())
+
+  start DateTime
+  end   DateTime
+
+  assignedTo ShiftAssignment[]
+
+  createdById String
+  createdBy   User   @relation(fields: [createdById], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Availability {
+  id String @id @default(uuid())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  start DateTime
+  end   DateTime
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ShiftSwapRequest {
+  id String @id @default(uuid())
+
+  createdById String
+  createdBy   User   @relation(fields: [createdById], references: [id])
+
+  currentShiftId    String
+  currentUserId     String
+  currentAssignment ShiftAssignment @relation("CurrentAssignment", fields: [currentShiftId, currentUserId], references: [shiftId, userId])
+
+  wantedShiftId    String
+  wantedUserId     String
+  wantedAssignment ShiftAssignment @relation("WantedAssignment", fields: [wantedShiftId, wantedUserId], references: [shiftId, userId])
+
+  status String @default("pending")
+
+  createdAt DateTime @default(now())
+}
