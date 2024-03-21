@@ -99,10 +99,8 @@ export const authenticate = (req: Request) =>
 export async function requireAuthedUser(
   req: Request,
 ): ReturnType<typeof userFromProfile> {
-  const user = (await authenticator.isAuthenticated(
-    req,
-  )) as Auth0Profile | null; // Type assertion needed due to isAuthenticated wrong return
-  if (user) return userFromProfile(user);
+  const user = await authenticator.isAuthenticated(req);
+  if (user) return user;
 
   // Not authenticated at this point.
 

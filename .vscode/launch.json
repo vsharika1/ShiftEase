@@ -9,7 +9,7 @@
       "type": "node",
       "request": "launch",
 
-      "program": "${workspaceFolder}/node_modules/.bin/remix",
+      "program": "${workspaceFolder}/node_modules/@remix-run/dev/dist/cli.js",
       "args": ["vite:dev"],
 
       /*
