@@ -10,8 +10,9 @@
     "lint": "node tools/lint-cli --typescript --eslint",
     "storybook": "cross-env STORYBOOK=true storybook dev -p 6006 --no-open",
     "build-storybook": "storybook build",
-    "prepare": "husky",
-    "gcp-build": "pnpm run build && prisma generate"
+    "postinstall": "prisma generate",
+    "prepare": "node -e \"if (!process.env.CI){process.exit(1)}\" || husky",
+    "gcp-build": "pnpm run build"
   },
   "packageManager": "pnpm@8.15.5",
   "dependencies": {
@@ -24,11 +25,13 @@
     "@radix-ui/react-icons": "^1.3.0",
     "@remix-run/node": "^2.8.1",
     "@remix-run/react": "^2.8.1",
+    "@remix-run/serve": "^2.8.1",
     "@uidotdev/usehooks": "^2.4.1",
     "auth0": "^4.3.1",
     "content-security-policy-builder": "^2.1.1",
     "framer-motion": "^11.0.18",
     "isbot": "^5.1.2",
+    "prisma": "^5.11.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.51.1",
@@ -83,7 +86,6 @@
     "postcss-preset-env": "^9.5.2",
     "prettier": "^3.2.5",
     "prettier-plugin-organize-imports": "^3.2.4",
-    "prisma": "^5.11.0",
     "storybook": "^8.0.2",
     "tailwindcss": "^3.4.1",
     "typescript": "^5.4.3",

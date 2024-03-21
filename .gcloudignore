@@ -1,0 +1,17 @@
+.gcloudignore
+.git
+.gitignore
+.github
+.husky
+.vscode
+.env
+
+/node_modules/
+*~
+
+.eslint*
+.prettier*
+/stories/
+/cypress/
+
+/build/
