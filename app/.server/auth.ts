@@ -3,6 +3,8 @@ import { createCookieSessionStorage, redirect } from '@remix-run/node';
 import { Authenticator } from 'remix-auth';
 import { Auth0Strategy, type Auth0Profile } from 'remix-auth-auth0';
 
+import { prisma } from '~/.server/db';
+
 // TODO: set using env
 const APP_NAME = 'CMPT372-Project';
 const OAUTH_CLIENTID = '6DF1LPKvK4aHzt0qzEBmQ7PmOXLryy0Q';
@@ -22,6 +24,18 @@ const CALLBACK_REDIRECT_KEY = 'redirect-to';
 const AUTH0_CLIENT_SECRET =
   'syBl9I6YxvJ6UUqcGneC7yZ9KDTEgjoxUAd-JhJXVBx5_lrTJPhcKy90blk7qWAt';
 
+async function userFromProfile(profile: Auth0Profile) {
+  const id = profile.id;
+  if (!id) throw new Error('No profile id found.');
+
+  let dbUser = await prisma.user.findUnique({ where: { id } });
+  if (!dbUser) {
+    dbUser = await prisma.user.create({ data: { id } });
+  }
+
+  return [profile, dbUser] as const;
+}
+
 const auth0Strategy = new Auth0Strategy(
   {
     callbackURL: 'http://localhost:5173/auth0/callback',
@@ -29,8 +43,8 @@ const auth0Strategy = new Auth0Strategy(
     clientSecret: AUTH0_CLIENT_SECRET,
     domain: AUTH0_URL.host,
   },
-  // eslint-disable-next-line @typescript-eslint/require-await
-  async ({ profile }) => profile,
+
+  async ({ profile }) => userFromProfile(profile),
 );
 
 const sessionStorage = createCookieSessionStorage({
@@ -49,7 +63,9 @@ const sessionStorage = createCookieSessionStorage({
 
 const { getSession, commitSession, destroySession } = sessionStorage;
 
-const authenticator = new Authenticator<Auth0Profile>(sessionStorage);
+const authenticator = new Authenticator<
+  Awaited<ReturnType<typeof userFromProfile>>
+>(sessionStorage);
 authenticator.use(auth0Strategy);
 
 export async function logout(req: Request) {
@@ -80,9 +96,13 @@ export const authenticate = (req: Request) =>
     failureRedirect: '/signed-out',
   });
 
-export async function requireAuth(req: Request): Promise<Auth0Profile> {
-  const user = await authenticator.isAuthenticated(req);
-  if (user) return user;
+export async function requireAuthedUser(
+  req: Request,
+): ReturnType<typeof userFromProfile> {
+  const user = (await authenticator.isAuthenticated(
+    req,
+  )) as Auth0Profile | null; // Type assertion needed due to isAuthenticated wrong return
+  if (user) return userFromProfile(user);
 
   // Not authenticated at this point.
 

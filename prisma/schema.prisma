@@ -4,23 +4,16 @@ generator client {
 
 datasource db {
   provider = "sqlite"
-  url      = env("DATABASE_URL")
+  url      = "file:./dev.db"
 }
 
 model User {
   id             String             @id
-  roleId         String
-  role           Role               @relation(fields: [roleId], references: [id])
+  role           String             @default("user")
   assignedShifts ShiftAssignment[]
   availability   Availability[]
   initiatedSwaps ShiftSwapRequest[]
   createdShifts  Shift[]
-}
-
-model Role {
-  id    String @id @default(uuid())
-  name  String @unique
-  users User[]
 }
 
 model ShiftAssignment {

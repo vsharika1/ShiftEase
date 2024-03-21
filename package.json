@@ -25,6 +25,7 @@
     "@remix-run/node": "^2.8.1",
     "@remix-run/react": "^2.8.1",
     "@uidotdev/usehooks": "^2.4.1",
+    "auth0": "^4.3.1",
     "content-security-policy-builder": "^2.1.1",
     "framer-motion": "^11.0.14",
     "isbot": "^5.1.2",
@@ -97,7 +98,8 @@
       "react-hook-form": "$react-hook-form"
     },
     "patchedDependencies": {
-      "listr2@8.0.2": "patches/listr2@8.0.2.patch"
+      "listr2@8.0.2": "patches/listr2@8.0.2.patch",
+      "ts-luxon@4.5.2": "patches/ts-luxon@4.5.2.patch"
     }
   },
   "prisma": {

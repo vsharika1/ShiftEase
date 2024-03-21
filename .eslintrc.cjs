@@ -106,6 +106,12 @@ module.exports = {
         },
       },
     ],
+    '@typescript-eslint/restrict-template-expressions': [
+      'error',
+      {
+        allowNumber: true, // Gets in the way of react-hook-form's fieldarray
+      },
+    ],
 
     // eslint-plugin-react rules
     'react/jsx-no-bind': [

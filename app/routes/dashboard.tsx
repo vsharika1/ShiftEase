@@ -1,15 +1,12 @@
 import type { LoaderFunctionArgs } from '@remix-run/node';
-import { NavLink, useLoaderData } from '@remix-run/react';
+import { NavLink, Outlet, useLoaderData } from '@remix-run/react';
 
-import { requireAuth } from '~/.server/auth';
-import { prisma } from '~/.server/db';
+import { requireAuthedUser } from '~/.server/auth';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const user = await requireAuth(request);
+  const result = await requireAuthedUser(request);
 
-  const dbUser = prisma.user.findUnique({ where: { id: user.id } });
-
-  return [user, dbUser] as const;
+  return result;
 };
 
 export default function Dashboard() {
@@ -23,9 +20,11 @@ export default function Dashboard() {
         Sign out
       </NavLink>
       <h4>RAW AUTH DATA</h4>
-      <p className="font-mono">{JSON.stringify(authUser)}</p>
+      <p className="font-mono bg-slate-300 p-4">{JSON.stringify(authUser)}</p>
       <h4>RAW DB DATA</h4>
-      <p className="font-mono">{JSON.stringify(dbUser)}</p>
+      <p className="font-mono bg-slate-300 p-4">{JSON.stringify(dbUser)}</p>
+
+      <Outlet />
     </>
   );
 }

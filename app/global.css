@@ -81,12 +81,12 @@ input:where(:not([type])),
 [multiple],
 textarea,
 select {
-  @apply block mt-3 w-full bg-inherit;
+  @apply bg-inherit;
 }
-
+/* 
 label {
   @apply mb-10 block text-sm;
-}
+} */
 
 button {
   @apply uppercase text-sm font-semibold dark:text-slate-50 text-slate-900;

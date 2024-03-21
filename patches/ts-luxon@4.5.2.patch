@@ -1,0 +1,18 @@
+diff --git a/package.json b/package.json
+index 4936480a180be567204ade89ebeec8557dd66164..cf7d85355675126a54d88acbe04c0b85782dd546 100644
+--- a/package.json
++++ b/package.json
+@@ -14,6 +14,13 @@
+     "main": "dist/ts-luxon.umd.js",
+     "module": "dist/ts-luxon.es6.js",
+     "typings": "dist/index.d.ts",
++    "type": "module",
++    "exports": {
++        ".": {
++            "types": "./dist/index.d.ts",
++            "import": "./dist/ts-luxon.es6.js"
++        }
++    },
+     "files": [
+         "dist/**",
+         "README.md"

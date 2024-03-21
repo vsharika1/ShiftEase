@@ -11,6 +11,9 @@ patchedDependencies:
   listr2@8.0.2:
     hash: f2nuvcgm2ansnr3u3ay5xabzoe
     path: patches/listr2@8.0.2.patch
+  ts-luxon@4.5.2:
+    hash: 2pqmk36dnhgkhgj5qetfkhp424
+    path: patches/ts-luxon@4.5.2.patch
 
 dependencies:
   '@emotion/react':
@@ -43,6 +46,9 @@ dependencies:
   '@uidotdev/usehooks':
     specifier: ^2.4.1
     version: 2.4.1(react-dom@18.2.0)(react@18.2.0)
+  auth0:
+    specifier: ^4.3.1
+    version: 4.3.1
   content-security-policy-builder:
     specifier: ^2.1.1
     version: 2.1.1
@@ -72,7 +78,7 @@ dependencies:
     version: 4.2.0(@remix-run/react@2.8.1)(react-dom@18.2.0)(react-hook-form@7.51.1)(react@18.2.0)
   ts-luxon:
     specifier: ^4.5.2
-    version: 4.5.2
+    version: 4.5.2(patch_hash=2pqmk36dnhgkhgj5qetfkhp424)
   ts-toolbelt:
     specifier: ^9.6.0
     version: 9.6.0
@@ -5590,6 +5596,14 @@ packages:
       has-symbols: 1.0.3
     dev: true
 
+  /auth0@4.3.1:
+    resolution: {integrity: sha512-VuR/PdNHwXD9QiYUZf8UN0qiv07yJWHKfF2yEhePaPCrpwbEm6lHM6dkN7ylOdseogCkGmvchxYGMga0IPNrCA==}
+    engines: {node: '>=18'}
+    dependencies:
+      jose: 4.15.5
+      uuid: 9.0.1
+    dev: false
+
   /autoprefixer@10.4.18(postcss@8.4.36):
     resolution: {integrity: sha512-1DKbDfsr6KUElM6wg+0zRNkB/Q7WcKYAaK+pzXn+Xqmszm/5Xa9coeNdtP88Vi+dPzZnMjhge8GIV49ZQkDa+g==}
     engines: {node: ^10 || ^12 || >=14}
@@ -8391,6 +8405,10 @@ packages:
     resolution: {integrity: sha512-gFqAIbuKyyso/3G2qhiO2OM6shY6EPP/R0+mkDbyspxKazh8BXDC5FiFsUjlczgdNz/vfra0da2y+aHrusLG/Q==}
     hasBin: true
     dev: true
+
+  /jose@4.15.5:
+    resolution: {integrity: sha512-jc7BFxgKPKi94uOvEmzlSWFFe2+vASyXaKUpdQKatWAESU2MWjDfFf0fdfc83CDKcA5QecabZeNLyfhe3yKNkg==}
+    dev: false
 
   /js-tokens@4.0.0:
     resolution: {integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==}
@@ -11787,10 +11805,11 @@ packages:
     resolution: {integrity: sha512-Y/arvbn+rrz3JCKl9C4kVNfTfSm2/mEp5FSz5EsZSANGPSlQrpRI5M4PKF+mJnE52jOO90PnPSc3Ur3bTQw0gA==}
     dev: true
 
-  /ts-luxon@4.5.2:
+  /ts-luxon@4.5.2(patch_hash=2pqmk36dnhgkhgj5qetfkhp424):
     resolution: {integrity: sha512-PqVfo1yiwAa1nYeyK/k4rOgHPGIqJQpGbOMA/+nLcpS2aXEO2mTSvBKUjPyo1PWCTD2/K2iH4OuRo3md344IoA==}
     engines: {node: '>=13'}
     dev: false
+    patched: true
 
   /ts-toolbelt@9.6.0:
     resolution: {integrity: sha512-nsZd8ZeNUzukXPlJmTBwUAuABDe/9qtVDelJeT/qW0ow3ZS3BsQJtNkan1802aM9Uf68/Y8ljw86Hu0h5IUW3w==}
@@ -12167,7 +12186,6 @@ packages:
   /uuid@9.0.1:
     resolution: {integrity: sha512-b+1eJOlsR9K8HJpow9Ok3fiWOWSIcIzXodvv0rQjVoOVNpWMpxf1wZNpt4y9h10odCNrqnYp1OBzRktckBe3sA==}
     hasBin: true
-    dev: true
 
   /uvu@0.5.6:
     resolution: {integrity: sha512-+g8ENReyr8YsOc6fv/NVJs2vFdHBnBNdfE49rshrTzDWOlUx4Gq7KOS2GD8eqhy2j+Ejq29+SbKH8yjkAqXqoA==}
