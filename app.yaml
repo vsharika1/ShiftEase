@@ -1,0 +1,18 @@
+runtime: nodejs
+env: flex
+
+runtime_config:
+  operating_system: 'ubuntu22'
+
+env_variables:
+  INSTANCE_UNIX_SOCKET: /cloudsql/cmpt372-project-bestgroup:us-west1:production-db
+  DB_PASS: t@3IJXp-?XtJ_pDp
+  APP_ORIGIN: https://cmpt372-project-bestgroup.uw.r.appspot.com
+  AUTH0_ORIGIN: https://dev-clqbtth7sknk4r0a.us.auth0.com
+  AUTH0_CLIENT_SECRET: syBl9I6YxvJ6UUqcGneC7yZ9KDTEgjoxUAd-JhJXVBx5_lrTJPhcKy90blk7qWAt
+
+beta_settings:
+  cloud_sql_instances: 'cmpt372-project-bestgroup:us-west1:production-db'
+
+automatic_scaling:
+  max_num_instances: 1

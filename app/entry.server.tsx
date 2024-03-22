@@ -16,9 +16,13 @@ import { RemixServer, isRouteErrorResponse } from '@remix-run/react';
 import builder from 'content-security-policy-builder';
 import { isbot } from 'isbot';
 
+import { prisma } from '~/.server/db';
+
 import { NonceProvider } from './nonce-provider';
 
 const ABORT_DELAY = 5000; // milliseconds
+
+await prisma.$connect();
 
 const handleError: HandleErrorFunction = (
   error: unknown,
