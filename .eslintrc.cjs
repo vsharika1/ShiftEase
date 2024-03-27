@@ -95,7 +95,7 @@ module.exports = {
     '@typescript-eslint/no-namespace': ['error', { allowDeclarations: true }],
     '@typescript-eslint/no-non-null-assertion': 'off',
     '@typescript-eslint/return-await': 'error',
-    '@typescript-eslint/no-throw-literal': 'off', // Gets in the way of Remix's throw `Response` pattern.
+    '@typescript-eslint/only-throw-error': 'off', // Gets in the way of Remix's throw `Response` pattern.
     '@typescript-eslint/no-misused-promises': [
       'error',
       {
