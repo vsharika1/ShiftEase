@@ -14,6 +14,7 @@ module.exports = {
     'unicorn/no-invalid-remove-event-listener': 'error',
     'unicorn/no-lonely-if': 'error',
     'unicorn/no-new-array': 'error',
+    'unicorn/no-single-promise-in-promise-methods': 'error',
     'unicorn/no-unnecessary-await': 'error', // TypeScript provides info squigglies but not errors
     'unicorn/no-useless-spread': 'error',
     'unicorn/numeric-separators-style': 'error',
