@@ -14,7 +14,7 @@
     "prepare": "node -e \"if (!process.env.CI){process.exit(1)}\" || husky",
     "gcp-build": "pnpm run build"
   },
-  "packageManager": "pnpm@8.15.5",
+  "packageManager": "pnpm@8.15.6+sha256.01c01eeb990e379b31ef19c03e9d06a14afa5250b82e81303f88721c99ff2e6f",
   "dependencies": {
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
