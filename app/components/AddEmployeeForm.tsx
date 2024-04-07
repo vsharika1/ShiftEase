@@ -1,71 +1,45 @@
-import type { ChangeEvent, FormEvent } from 'react';
-import { useEffect, useState } from 'react';
+import { Form } from '@remix-run/react';
 
+import { zodResolver } from '@hookform/resolvers/zod';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import { useRemixForm } from 'remix-hook-form';
+import { z } from 'zod';
 
-interface Role {
-  role_id: number;
-  role_name: string;
-}
+// import { PrismaClient } from '@prisma/client';
 
-// Correctly typing useState for roles
-const fetchRoles = () =>
-  Promise.resolve([
-    { role_id: 1, role_name: 'Administrator' },
-    { role_id: 2, role_name: 'User' },
-    // Add other roles as necessary
-  ]);
+// const prisma = new PrismaClient();
+
+const EmployeeSchema = z.object({
+  email: z
+    .string()
+    .email({ message: 'Invalid email format' })
+    .nonempty({ message: 'Email is required' }),
+  password: z.string().min(1, { message: 'Password is required' }),
+  role: z.string().min(1, { message: 'Role is required' }),
+  first_name: z.string().optional(),
+  last_name: z.string().optional(),
+  contact_number: z.string().optional(),
+});
+
+type EmployeeFormData = z.infer<typeof EmployeeSchema>;
 
 export default function AddEmployeeForm() {
-  const [roles, setRoles] = useState<Role[]>([]);
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-    role_id: '',
-    first_name: '',
-    last_name: '',
-    contact_number: '',
+  const {
+    register,
+    // handleSubmit,
+    formState: { errors },
+  } = useRemixForm<EmployeeFormData>({
+    resolver: zodResolver(EmployeeSchema),
   });
 
-  useEffect(() => {
-    const loadRoles = async () => {
-      const rolesFromServer = await fetchRoles();
-      setRoles(rolesFromServer);
-      if (rolesFromServer.length > 0) {
-        setFormData((formData) => ({
-          ...formData,
-          // role_id: rolesFromServer[0].role_id.toString(),
-        }));
-      }
-    };
-
-    void loadRoles();
-  }, []);
-
-  const handleChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [name]: value,
-    }));
-  };
-
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log('Form data:', formData);
-    // Integrate actual submit logic here
-  };
-
   return (
-    <div className="mx-auto mb-10 bg-white shadow-lg rounded-lg overflow-hidden" style={{ maxWidth: '500px' }}>
+    <div
+      className="mx-auto mb-10 bg-white shadow-lg rounded-lg overflow-hidden"
+      style={{ maxWidth: '500px' }}
+    >
       <div style={{ padding: '24px' }}>
         <div className="font-bold text-2xl mb-2">Add New User</div>
-        <form
-          onSubmit={handleSubmit}
-          className="space-y-4 pt-4 mb-4"
-        >
+        <Form method="post" className="space-y-4 pt-4 mb-4">
           <div className="mb-4">
             <label
               className="block text-gray-700 text-sm font-bold mb-2"
@@ -74,14 +48,22 @@ export default function AddEmployeeForm() {
               Email:
             </label>
             <input
+              {...register('email', {
+                required: 'Email is required',
+                pattern: {
+                  value: /\S+@\S+\.\S+/u,
+                  message: 'Invalid email format',
+                },
+              })}
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="email"
               type="email"
               name="email"
-              value={formData.email}
-              onChange={handleChange}
               required
             />
+            {errors.email && (
+              <p className="text-red-500">{errors.email.message?.toString()}</p>
+            )}
           </div>
           <div className="mb-4">
             <label
@@ -91,14 +73,18 @@ export default function AddEmployeeForm() {
               Password:
             </label>
             <input
+              {...register('password', { required: 'Password is required' })}
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
               id="password"
               type="password"
               name="password"
-              value={formData.password}
-              onChange={handleChange}
               required
             />
+            {errors.password && (
+              <p className="text-red-500">
+                {errors.password.message?.toString()}
+              </p>
+            )}
           </div>
           <div className="mb-4">
             <label
@@ -107,20 +93,17 @@ export default function AddEmployeeForm() {
             >
               Role:
             </label>
-            <select
-              className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
-              id="role_id"
-              name="role_id"
-              value={formData.role_id}
-              onChange={handleChange}
+            <input
+              {...register('role', { required: 'Role is required' })}
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="role"
+              type="text"
+              name="role"
               required
-            >
-              {roles.map((role) => (
-                <option key={role.role_id} value={role.role_id}>
-                  {role.role_name}
-                </option>
-              ))}
-            </select>
+            />
+            {errors.role && (
+              <p className="text-red-500">{errors.role.message?.toString()}</p>
+            )}
           </div>
           <div className="mb-4">
             <label
@@ -130,12 +113,11 @@ export default function AddEmployeeForm() {
               First Name:
             </label>
             <input
+              {...register('first_name')}
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="first_name"
               type="text"
               name="first_name"
-              value={formData.first_name}
-              onChange={handleChange}
             />
           </div>
           <div className="mb-4">
@@ -146,12 +128,11 @@ export default function AddEmployeeForm() {
               Last Name:
             </label>
             <input
+              {...register('last_name')}
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="last_name"
               type="text"
               name="last_name"
-              value={formData.last_name}
-              onChange={handleChange}
             />
           </div>
           <div className="mb-4">
@@ -162,24 +143,31 @@ export default function AddEmployeeForm() {
               Contact Number:
             </label>
             <input
+              {...register('contact_number', {
+                required: 'Contact number is required',
+              })}
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="contact_number"
               type="text"
               name="contact_number"
-              value={formData.contact_number}
-              onChange={handleChange}
+              required
             />
+            {errors.contact_number && (
+              <p className="text-red-500">
+                {errors.contact_number.message?.toString()}
+              </p>
+            )}
           </div>
           <div className="flex justify-end">
             <button
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex items-center"
               type="submit"
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex items-center"
             >
-              <PersonAddIcon style={{ fontSize: '20px', marginRight: '4px' }} />
+              <PersonAddIcon style={{ fontSize: '20px', marginRight: '4px' }} />{' '}
               Add User
             </button>
           </div>
-        </form>
+        </Form>
       </div>
     </div>
   );
