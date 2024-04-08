@@ -1,15 +1,16 @@
-import AssessmentIcon from '@mui/icons-material/Assessment';
 import BadgeIcon from '@mui/icons-material/Badge';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
-import EventBusyIcon from '@mui/icons-material/EventBusy';
-import NotificationsIcon from '@mui/icons-material/Notifications';
 import ScheduleIcon from '@mui/icons-material/Schedule';
-import SettingsIcon from '@mui/icons-material/Settings';
 import SwapHorizontalCircleIcon from '@mui/icons-material/SwapHorizontalCircle';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
+
+// import EventBusyIcon from '@mui/icons-material/EventBusy';
+// import NotificationsIcon from '@mui/icons-material/Notifications';
+// import SettingsIcon from '@mui/icons-material/Settings';
+// import AssessmentIcon from '@mui/icons-material/Assessment';
 
 export const ManagerNavItems = (
   <>
@@ -37,7 +38,7 @@ export const ManagerNavItems = (
       </ListItemIcon>
       <ListItemText primary="Shift Swap Approvals" />
     </ListItem>
-    <ListItem button>
+    {/* <ListItem button>
       <ListItemIcon sx={{ color: 'white' }}>
         <NotificationsIcon />
       </ListItemIcon>
@@ -54,7 +55,7 @@ export const ManagerNavItems = (
         <SettingsIcon />
       </ListItemIcon>
       <ListItemText primary="Settings" />
-    </ListItem>
+    </ListItem> */}
   </>
 );
 
@@ -84,7 +85,7 @@ export const EmployeeNavItems = (
       </ListItemIcon>
       <ListItemText primary="Availability" />
     </ListItem>
-    <ListItem button>
+    {/* <ListItem button>
       <ListItemIcon sx={{ color: 'white' }}>
         <EventBusyIcon />
       </ListItemIcon>
@@ -101,6 +102,6 @@ export const EmployeeNavItems = (
         <SettingsIcon />
       </ListItemIcon>
       <ListItemText primary="Settings" />
-    </ListItem>
+    </ListItem> */}
   </>
 );

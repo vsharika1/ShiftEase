@@ -34,7 +34,7 @@ export default function NavDrawer({ isManager }: Props) {
     >
       <div>
         <Typography variant="h6" sx={{ padding: 2, color: 'white' }}>
-          Scheduler
+          ShiftEase
         </Typography>
       </div>
       <Divider />

@@ -30,7 +30,7 @@ export const links: LinksFunction = () => [
 ];
 
 export const meta: MetaFunction = () => [
-  { title: 'Best CMPT372 Project' },
+  { title: 'ShiftEase' },
   { name: 'description', content: 'Best group project written for CMPT372!' },
 ];
 

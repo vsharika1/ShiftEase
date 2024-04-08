@@ -16,12 +16,10 @@ const meta: Meta<typeof ShiftDetails> = {
       {
         user_id: '018e54ef-9dca-78e5-b614-95d6d602ae7f',
         nickname: 'Jane Doe',
-        phone_number: '555-555-5555',
       },
       {
         user_id: '018e54f0-a78c-7e2a-8cb1-b165bb92fde3',
         nickname: 'Steve Jobs',
-        phone_number: '555-555-5555',
       },
     ],
     relativeBase: new Date('2024-03-19T05:57:51.228Z'),

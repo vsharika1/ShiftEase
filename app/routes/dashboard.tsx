@@ -13,18 +13,49 @@ export default function Dashboard() {
   const [authUser, dbUser] = useLoaderData<typeof loader>();
 
   return (
-    <>
-      <h1>Sample Authentication Protected Route</h1>
-      <h4>If you see this you&apos;ve logged in! I hope...</h4>
-      <NavLink to="/logout" className="font-bold uppercase">
-        Sign out
-      </NavLink>
-      <h4>RAW AUTH DATA</h4>
-      <p className="font-mono bg-slate-300 p-4">{JSON.stringify(authUser)}</p>
-      <h4>RAW DB DATA</h4>
-      <p className="font-mono bg-slate-300 p-4">{JSON.stringify(dbUser)}</p>
+    <div className="flex items-center justify-center min-h-screen p-8">
+      <div className="max-w-4xl">
+        <h1 className="text-3xl font-bold text-gray-800 mb-4">
+          Sample Authentication Protected Route
+        </h1>
+        <p className="text-lg text-gray-600 mb-6">
+          If you see this, you&apos;ve logged in! I hope...
+        </p>
+        <div>
+          <NavLink
+            to="/logout"
+            className="inline-block bg-blue-500 text-white font-bold uppercase text-sm px-6 py-2 rounded hover:bg-blue-600 transition duration-200"
+          >
+            Sign out
+          </NavLink>
+        </div>
+        <div className="mt-4">
+          <NavLink
+            to="/addEmployee"
+            className="inline-block bg-blue-500 text-white font-bold uppercase text-sm px-6 py-2 rounded hover:bg-blue-600 transition duration-200"
+          >
+            Add User
+          </NavLink>
+        </div>
+        <div className="mt-8">
+          <h4 className="text-xl font-semibold text-gray-700 mb-2">
+            RAW AUTH DATA
+          </h4>
+          <p className="font-mono bg-white p-4 rounded shadow">
+            {JSON.stringify(authUser, null, 2)}
+          </p>
+        </div>
+        <div className="mt-6">
+          <h4 className="text-xl font-semibold text-gray-700 mb-2">
+            RAW DB DATA
+          </h4>
+          <p className="font-mono bg-white p-4 rounded shadow">
+            {JSON.stringify(dbUser, null, 2)}
+          </p>
+        </div>
 
-      <Outlet />
-    </>
+        <Outlet />
+      </div>
+    </div>
   );
 }
