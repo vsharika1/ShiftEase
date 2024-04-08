@@ -10,7 +10,6 @@ type Shift = Prisma.ShiftGetPayload<{
 interface Auth0User {
   user_id: string;
   nickname: string;
-  phone_number: string;
 }
 
 interface Props {
@@ -56,7 +55,6 @@ export default function ShiftDetails({ shift, users, relativeBase }: Props) {
             {users.map((user) => (
               <li key={user.user_id} className="py-2 flex gap-4">
                 <div className="grow">{user.nickname}</div>
-                <div>{user.phone_number}</div>
               </li>
             ))}
           </ul>

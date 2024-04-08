@@ -31,14 +31,16 @@ export async function action({ request }: ActionFunctionArgs) {
     password,
     given_name,
     family_name,
-    phone_number,
     connection: 'Username-Password-Authentication',
   });
+
+  const phoneNumber = phone_number ?? '';
 
   await prisma.user.create({
     data: {
       id: authUser.user_id,
       role: data.role,
+      phoneNumber,
     },
   });
 
