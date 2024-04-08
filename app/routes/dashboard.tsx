@@ -29,6 +29,14 @@ export default function Dashboard() {
             Sign out
           </NavLink>
         </div>
+        <div className="mt-4">
+          <NavLink
+            to="/addEmployee"
+            className="inline-block bg-blue-500 text-white font-bold uppercase text-sm px-6 py-2 rounded hover:bg-blue-600 transition duration-200"
+          >
+            Add User
+          </NavLink>
+        </div>
         <div className="mt-8">
           <h4 className="text-xl font-semibold text-gray-700 mb-2">
             RAW AUTH DATA

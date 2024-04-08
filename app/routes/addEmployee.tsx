@@ -6,6 +6,7 @@ import { getValidatedFormData } from 'remix-hook-form';
 import { requireAuthedUser } from '~/.server/auth';
 import { mgmtClient } from '~/.server/auth0';
 import { prisma } from '~/.server/db';
+import AddEmployeeForm from '~/components/AddEmployeeForm';
 import type { UserFormData } from '~/types/form/UserSubmission';
 import { userFormResolver } from '~/types/form/UserSubmission';
 
@@ -42,4 +43,8 @@ export async function action({ request }: ActionFunctionArgs) {
   });
 
   return redirect('/dashboard'); // TODO: changes this once we have an employee list route
+}
+
+export default function AddEmployeeRoute() {
+  return <AddEmployeeForm />;
 }

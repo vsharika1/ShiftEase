@@ -5,7 +5,9 @@ import HelloWorld from '~/components/HelloWorld';
 export default function Home() {
   return (
     <>
-      <HelloWorld />
+      <div className="flex justify-center">
+        <HelloWorld />
+      </div>
       <div className="text-center mt-4">
         <NavLink
           to="/dashboard"
