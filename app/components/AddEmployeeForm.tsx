@@ -1,9 +1,10 @@
 import { Form } from '@remix-run/react';
 
-import { zodResolver } from '@hookform/resolvers/zod';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import { useRemixForm } from 'remix-hook-form';
 import { z } from 'zod';
+
+import { userFormResolver } from '~/types/form/UserSubmission';
 
 const EmployeeSchema = z.object({
   email: z
@@ -24,15 +25,12 @@ export default function AddEmployeeForm() {
     register,
     formState: { errors },
   } = useRemixForm<EmployeeFormData>({
-    resolver: zodResolver(EmployeeSchema),
+    resolver: userFormResolver,
   });
 
   return (
-    <div
-      className="bg-white shadow-lg rounded-lg overflow-hidden whitespace-nowrap"
-      style={{ minWidth: 'fit-content' }}
-    >
-      <div style={{ padding: '24px' }}>
+    <div className="bg-white shadow-lg rounded-lg overflow-hidden whitespace-nowrap">
+      <div className="p-6">
         <div className="font-bold text-2xl mb-2">Add New User</div>
         <Form method="post" className="space-y-4 pt-4 mb-4">
           <div className="mb-4">
@@ -97,6 +95,7 @@ export default function AddEmployeeForm() {
               First Name:
             </label>
             <input
+              {...register('first_name')}
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="first_name"
             />
@@ -109,6 +108,7 @@ export default function AddEmployeeForm() {
               Last Name:
             </label>
             <input
+              {...register('last_name')}
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="last_name"
             />
@@ -121,6 +121,7 @@ export default function AddEmployeeForm() {
               Contact Number:
             </label>
             <input
+              {...register('contact_number')}
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="contact_number"
             />

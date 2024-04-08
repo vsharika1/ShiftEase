@@ -1,48 +1,37 @@
-import type { ActionFunction } from '@remix-run/node';
+import type {
+  ActionFunction,
+  ActionFunctionArgs,
+  LoaderFunctionArgs,
+} from '@remix-run/node';
 import { json } from '@remix-run/node';
 
+import { getValidatedFormData } from 'remix-hook-form';
+
+import { requireAuthedUser } from '~/.server/auth';
 import { prisma } from '~/.server/db';
-import { UserSubmission } from '~/types/form/UserSubmission';
+import type { UserFormData } from '~/types/form/UserSubmission';
+import { userFormResolver } from '~/types/form/UserSubmission';
 
-export const action: ActionFunction = async ({ request }) => {
-  const formData = await request.formData();
+export async function loader({ request }: LoaderFunctionArgs) {
+  await requireAuthedUser(request);
+  return null;
+}
 
-  // Convert formData to an object
-  const formObj = Object.fromEntries(formData);
-  // Validate formData using Zod
-  const result = UserSubmission.safeParse(formObj);
+export const action: ActionFunction = async ({
+  request,
+}: ActionFunctionArgs) => {
+  const { errors, data } = await getValidatedFormData<UserFormData>(
+    request,
+    userFormResolver,
+  );
 
-  if (!result.success) {
-    // Handle validation errors
-    return json(
-      { success: false, errors: result.error.format() },
-      { status: 400 },
-    );
-  }
+  if (errors) return json(errors);
 
-  // Destructure validated data
-  const { id, role } = result.data;
+  const newUser = await prisma.user.create({
+    data: {
+      ...data,
+    },
+  });
 
-  try {
-    // Hash password
-
-    const newUser = await prisma.user.create({
-      data: {
-        id, // Assuming your user model uses an 'email' field
-        // password,
-        role,
-        // firstName,
-        // lastName,
-        // contactNumber,
-      },
-    });
-
-    return json({ success: true, newUser });
-  } catch (error) {
-    console.error('Error adding new user:', error);
-    return json(
-      { success: false, error: 'Failed to add new user.' },
-      { status: 500 },
-    );
-  }
+  return json(newUser);
 };
