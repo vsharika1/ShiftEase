@@ -1,7 +1,6 @@
 import type { ChangeEvent, FormEvent } from 'react';
 import { useEffect, useState } from 'react';
 
-import PersonIcon from '@mui/icons-material/Person';
 import Tooltip from '@mui/material/Tooltip';
 
 interface Role {
@@ -70,7 +69,7 @@ export default function EditEmployeeData({ userId }: { userId: number }) {
     >
       <div className="px-6 py-4">
         <div className="font-bold text-2xl my-2 flex items-center">
-          <PersonIcon style={{ marginRight: '4px' }} /> Edit User Data
+          Edit User Data
         </div>
         <form onSubmit={handleSubmit} className="space-y-4 pt-4 mb-4">
           <Tooltip title="User ID is not editable">
