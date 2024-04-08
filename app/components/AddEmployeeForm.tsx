@@ -2,29 +2,18 @@ import { Form } from '@remix-run/react';
 
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import { useRemixForm } from 'remix-hook-form';
-import { z } from 'zod';
 
-import { userFormResolver } from '~/types/form/UserSubmission';
-
-const EmployeeSchema = z.object({
-  email: z
-    .string()
-    .email({ message: 'Invalid email format' })
-    .nonempty({ message: 'Email is required' }),
-  password: z.string().min(1, { message: 'Password is required' }),
-  role: z.string().min(1, { message: 'Role is required' }),
-  first_name: z.string().optional(),
-  last_name: z.string().optional(),
-  contact_number: z.string().optional(),
-});
-
-type EmployeeFormData = z.infer<typeof EmployeeSchema>;
+import {
+  userFormResolver,
+  type UserFormData,
+} from '~/types/form/UserSubmission';
 
 export default function AddEmployeeForm() {
   const {
     register,
+    handleSubmit,
     formState: { errors },
-  } = useRemixForm<EmployeeFormData>({
+  } = useRemixForm<UserFormData>({
     resolver: userFormResolver,
   });
 
@@ -32,7 +21,7 @@ export default function AddEmployeeForm() {
     <div className="bg-white shadow-lg rounded-lg overflow-hidden whitespace-nowrap">
       <div className="p-6">
         <div className="font-bold text-2xl mb-2">Add New User</div>
-        <Form method="post" className="space-y-4 pt-4 mb-4">
+        <Form onSubmit={handleSubmit} className="space-y-4 pt-4 mb-4">
           <div className="mb-4">
             <label
               className="block text-gray-700 text-sm font-bold mb-2"
@@ -45,7 +34,7 @@ export default function AddEmployeeForm() {
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="email"
               type="email"
-              required
+              autoComplete="off"
             />
             {errors.email && (
               <p className="text-red-500">{errors.email.message}</p>
@@ -63,7 +52,7 @@ export default function AddEmployeeForm() {
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
               id="password"
               type="password"
-              required
+              autoComplete="new-password"
             />
             {errors.password && (
               <p className="text-red-500">{errors.password.message}</p>
@@ -80,8 +69,7 @@ export default function AddEmployeeForm() {
               {...register('role')}
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="role"
-              type="text"
-              required
+              autoComplete="off"
             />
             {errors.role && (
               <p className="text-red-500">{errors.role.message}</p>
@@ -95,9 +83,10 @@ export default function AddEmployeeForm() {
               First Name:
             </label>
             <input
-              {...register('first_name')}
+              {...register('given_name')}
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="first_name"
+              autoComplete="off"
             />
           </div>
           <div className="mb-4">
@@ -108,9 +97,10 @@ export default function AddEmployeeForm() {
               Last Name:
             </label>
             <input
-              {...register('last_name')}
+              {...register('family_name')}
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="last_name"
+              autoComplete="off"
             />
           </div>
           <div className="mb-4">
@@ -121,12 +111,14 @@ export default function AddEmployeeForm() {
               Contact Number:
             </label>
             <input
-              {...register('contact_number')}
+              {...register('phone_number')}
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="contact_number"
+              type="tel"
+              autoComplete="off"
             />
-            {errors.contact_number && (
-              <p className="text-red-500">{errors.contact_number.message}</p>
+            {errors.phone_number && (
+              <p className="text-red-500">{errors.phone_number.message}</p>
             )}
           </div>
           <div className="flex justify-end">

@@ -35,6 +35,8 @@ async function userFromProfile(profile: Auth0Profile) {
   return [profile, dbUser] as const;
 }
 
+export type UserInfo = Awaited<ReturnType<typeof userFromProfile>>;
+
 const auth0Strategy = new Auth0Strategy(
   {
     callbackURL: new URL(OAUTH_CALLLBACK_PATHNAME, APP_ORIGIN).href,
@@ -62,9 +64,7 @@ const sessionStorage = createCookieSessionStorage({
 
 const { getSession, commitSession, destroySession } = sessionStorage;
 
-const authenticator = new Authenticator<
-  Awaited<ReturnType<typeof userFromProfile>>
->(sessionStorage);
+const authenticator = new Authenticator<UserInfo>(sessionStorage);
 authenticator.use(auth0Strategy);
 
 export async function logout(req: Request) {
@@ -95,9 +95,7 @@ export const authenticate = (req: Request) =>
     failureRedirect: '/signed-out',
   });
 
-export async function requireAuthedUser(
-  req: Request,
-): ReturnType<typeof userFromProfile> {
+export async function requireAuthedUser(req: Request): Promise<UserInfo> {
   const user = await authenticator.isAuthenticated(req);
   if (user) return user;
 
