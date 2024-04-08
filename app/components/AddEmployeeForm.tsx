@@ -5,10 +5,6 @@ import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import { useRemixForm } from 'remix-hook-form';
 import { z } from 'zod';
 
-// import { PrismaClient } from '@prisma/client';
-
-// const prisma = new PrismaClient();
-
 const EmployeeSchema = z.object({
   email: z
     .string()
@@ -26,7 +22,6 @@ type EmployeeFormData = z.infer<typeof EmployeeSchema>;
 export default function AddEmployeeForm() {
   const {
     register,
-    // handleSubmit,
     formState: { errors },
   } = useRemixForm<EmployeeFormData>({
     resolver: zodResolver(EmployeeSchema),
@@ -34,8 +29,8 @@ export default function AddEmployeeForm() {
 
   return (
     <div
-      className="mx-auto mb-10 bg-white shadow-lg rounded-lg overflow-hidden"
-      style={{ maxWidth: '500px' }}
+      className="bg-white shadow-lg rounded-lg overflow-hidden whitespace-nowrap"
+      style={{ minWidth: 'fit-content' }}
     >
       <div style={{ padding: '24px' }}>
         <div className="font-bold text-2xl mb-2">Add New User</div>
@@ -48,21 +43,14 @@ export default function AddEmployeeForm() {
               Email:
             </label>
             <input
-              {...register('email', {
-                required: 'Email is required',
-                pattern: {
-                  value: /\S+@\S+\.\S+/u,
-                  message: 'Invalid email format',
-                },
-              })}
+              {...register('email')}
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="email"
               type="email"
-              name="email"
               required
             />
             {errors.email && (
-              <p className="text-red-500">{errors.email.message?.toString()}</p>
+              <p className="text-red-500">{errors.email.message}</p>
             )}
           </div>
           <div className="mb-4">
@@ -73,36 +61,32 @@ export default function AddEmployeeForm() {
               Password:
             </label>
             <input
-              {...register('password', { required: 'Password is required' })}
+              {...register('password')}
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
               id="password"
               type="password"
-              name="password"
               required
             />
             {errors.password && (
-              <p className="text-red-500">
-                {errors.password.message?.toString()}
-              </p>
+              <p className="text-red-500">{errors.password.message}</p>
             )}
           </div>
           <div className="mb-4">
             <label
               className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="role_id"
+              htmlFor="role"
             >
               Role:
             </label>
             <input
-              {...register('role', { required: 'Role is required' })}
+              {...register('role')}
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="role"
               type="text"
-              name="role"
               required
             />
             {errors.role && (
-              <p className="text-red-500">{errors.role.message?.toString()}</p>
+              <p className="text-red-500">{errors.role.message}</p>
             )}
           </div>
           <div className="mb-4">
@@ -113,11 +97,8 @@ export default function AddEmployeeForm() {
               First Name:
             </label>
             <input
-              {...register('first_name')}
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="first_name"
-              type="text"
-              name="first_name"
             />
           </div>
           <div className="mb-4">
@@ -128,11 +109,8 @@ export default function AddEmployeeForm() {
               Last Name:
             </label>
             <input
-              {...register('last_name')}
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="last_name"
-              type="text"
-              name="last_name"
             />
           </div>
           <div className="mb-4">
@@ -143,27 +121,16 @@ export default function AddEmployeeForm() {
               Contact Number:
             </label>
             <input
-              {...register('contact_number', {
-                required: 'Contact number is required',
-              })}
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="contact_number"
-              type="text"
-              name="contact_number"
-              required
             />
             {errors.contact_number && (
-              <p className="text-red-500">
-                {errors.contact_number.message?.toString()}
-              </p>
+              <p className="text-red-500">{errors.contact_number.message}</p>
             )}
           </div>
           <div className="flex justify-end">
-            <button
-              type="submit"
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex items-center"
-            >
-              <PersonAddIcon style={{ fontSize: '20px', marginRight: '4px' }} />{' '}
+            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex items-center">
+              <PersonAddIcon className="text-base mr-1" />
               Add User
             </button>
           </div>

@@ -73,9 +73,6 @@ dependencies:
   react-hook-form:
     specifier: ^7.51.2
     version: 7.51.2(react@18.2.0)
-  remix:
-    specifier: ^2.8.1
-    version: 2.8.1
   remix-auth:
     specifier: ^3.6.0
     version: 3.6.0(@remix-run/react@2.8.1)(@remix-run/server-runtime@2.8.1)
@@ -10809,11 +10806,6 @@ packages:
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
       react-hook-form: 7.51.2(react@18.2.0)
-    dev: false
-
-  /remix@2.8.1:
-    resolution: {integrity: sha512-ySWPcfC6Do6EB+EO6eerOwnuFHqcL0Ppf358N+9pZszqEq+LV4tK5g270eNu7HnzgPtspaCogb4obOs+cn/Fyw==}
-    engines: {node: '>=18.0.0'}
     dev: false
 
   /require-like@0.1.2:

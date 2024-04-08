@@ -1,6 +1,6 @@
 export default function HelloWorld() {
   return (
-    <div className="mx-auto max-w-lg mt-8 text-center">
+    <div className="max-w-lg text-center">
       <h1 className="text-4xl font-bold mb-4">Welcome to ShiftEase</h1>
       <h2 className="text-2xl mb-4">Simplify Your Scheduling</h2>
       <p className="mb-4">
