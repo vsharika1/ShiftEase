@@ -1,7 +1,7 @@
 import { ManagementClient } from 'auth0';
 
 if (
-  !process.env.AUTH0_DOMAIN ||
+  !process.env.AUTH0_ORIGIN ||
   !process.env.AUTH0_MGMT_CLIENT_ID ||
   !process.env.AUTH0_MGMT_CLIENT_SECRET
 ) {
@@ -11,7 +11,7 @@ if (
 }
 
 export const mgmtClient = new ManagementClient({
-  domain: process.env.AUTH0_DOMAIN,
+  domain: new URL(process.env.AUTH0_ORIGIN).host,
   clientId: process.env.AUTH0_MGMT_CLIENT_ID,
   clientSecret: process.env.AUTH0_MGMT_CLIENT_SECRET,
 });

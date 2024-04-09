@@ -16,6 +16,12 @@ const config: UserConfigExport = {
       'top-level-await': true,
     },
   },
+  server: {
+    warmup: {
+      clientFiles: ['./app/entry.client.tsx', './app/root.tsx'],
+      ssrFiles: ['./app/entry.server.tsx', './app/**/.server/'],
+    },
+  },
 };
 
 if (env.CODESPACES) {
