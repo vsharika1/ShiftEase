@@ -32,8 +32,8 @@
     "framer-motion": "^11.0.25",
     "isbot": "^5.1.4",
     "prisma": "^5.12.1",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "react": "18.3.0-next-fecc288b7-20221025",
+    "react-dom": "18.3.0-next-fecc288b7-20221025",
     "react-hook-form": "^7.51.2",
     "remix-auth": "^3.6.0",
     "remix-auth-auth0": "^1.10.0",
@@ -97,7 +97,9 @@
   },
   "pnpm": {
     "overrides": {
-      "react-hook-form": "$react-hook-form"
+      "react-hook-form": "$react-hook-form",
+      "react": "$react",
+      "react-dom": "$react-dom"
     },
     "patchedDependencies": {
       "listr2@8.0.2": "patches/listr2@8.0.2.patch",
