@@ -13,12 +13,13 @@ interface EditEmployeeDataProps {
   user: User;
 }
 
+function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
+  console.log(`${event.target.name}: ${event.target.value}`);
+}
+
 export default function EditEmployeeData({ user }: EditEmployeeDataProps) {
   return (
-    <div
-      className="mx-auto bg-white shadow-lg rounded-lg overflow-hidden"
-      style={{ maxWidth: '500px' }}
-    >
+    <div className="mx-auto bg-white shadow-lg rounded-lg overflow-hidden w-2/5">
       <div className="px-6 py-4">
         <div className="font-bold text-2xl my-2 flex items-center">
           Edit User Data
@@ -36,7 +37,7 @@ export default function EditEmployeeData({ user }: EditEmployeeDataProps) {
             <input
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight"
               type="text"
-              value={user.id}
+              defaultValue={user.id}
               disabled
             />
           </div>
@@ -52,7 +53,7 @@ export default function EditEmployeeData({ user }: EditEmployeeDataProps) {
               id="email"
               type="email"
               name="email"
-              value={user.email}
+              defaultValue={user.email}
               required
             />
           </div>
@@ -67,7 +68,8 @@ export default function EditEmployeeData({ user }: EditEmployeeDataProps) {
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="role"
               name="role"
-              value={user.role}
+              defaultValue={user.role}
+              onChange={handleInputChange}
               required
             />
           </div>
@@ -83,7 +85,8 @@ export default function EditEmployeeData({ user }: EditEmployeeDataProps) {
               id="first_name"
               type="text"
               name="first_name"
-              value={user.first_name}
+              defaultValue={user.first_name}
+              onChange={handleInputChange}
             />
           </div>
           <div className="mb-4">
@@ -98,7 +101,8 @@ export default function EditEmployeeData({ user }: EditEmployeeDataProps) {
               id="last_name"
               type="text"
               name="last_name"
-              value={user.last_name}
+              defaultValue={user.last_name}
+              onChange={handleInputChange}
             />
           </div>
           <div className="mb-4">
@@ -113,7 +117,8 @@ export default function EditEmployeeData({ user }: EditEmployeeDataProps) {
               id="phoneNumber"
               type="text"
               name="phoneNumber"
-              value={user.phoneNumber}
+              defaultValue={user.phoneNumber}
+              onChange={handleInputChange}
             />
           </div>
           <div className="flex justify-end">

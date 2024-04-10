@@ -17,7 +17,7 @@ export default function AddEmployeeForm() {
   });
 
   return (
-    <div className="bg-white shadow-lg rounded-lg overflow-hidden whitespace-nowrap">
+    <div className="bg-white shadow-lg rounded-lg overflow-hidden w-2/5">
       <div className="p-6">
         <div className="font-bold text-2xl mb-2">Add New User</div>
         <Form onSubmit={handleSubmit} className="space-y-4 pt-4 mb-4">

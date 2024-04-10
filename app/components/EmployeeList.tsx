@@ -13,15 +13,10 @@ interface EmployeeListProps {
   users: User[];
 }
 
-const handleMoreInfo = (userId: string) => {
-  console.log('More info for user', userId);
-  // Implement more info logic here, such as displaying a modal or redirecting to a detailed view
-};
-
 export default function EmployeeList({ users }: EmployeeListProps) {
   return (
-    <div className="max-w-5xl mx-auto my-10">
-      <h1 className="text-2xl font-semibold text-gray-800 mb-4">
+    <div className="max-w-5xl mx-auto">
+      <h1 className="text-2xl font-semibold text-gray-800 mb-4 text-center">
         Employee Directory
       </h1>
       <div className="shadow-lg rounded-lg overflow-hidden">
@@ -72,12 +67,12 @@ export default function EmployeeList({ users }: EmployeeListProps) {
                     {user.phoneNumber || 'N/A'}
                   </td>
                   <td className="border-b border-gray-200 bg-white text-sm flex justify-start items-center p-2">
-                    <button
+                    {/* <button
                       onClick={() => handleMoreInfo(user.id)}
                       className="text-gray-500 hover:text-gray-700 p-2 mr-2"
                     >
                       More Info
-                    </button>
+                    </button> */}
                     <NavLink
                       to={`/edit-employee/${encodeURIComponent(user.id)}`}
                       className="text-blue-500 hover:text-blue-700 p-2 mr-2"

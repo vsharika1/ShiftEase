@@ -30,7 +30,11 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     },
   });
 
-  return json({ authUser, dbUser, nextShift: nextAssignment?.shift });
+  return json({
+    authUser,
+    dbUser,
+    nextShift: nextAssignment?.shift,
+  });
 };
 
 export default function Dashboard() {
@@ -39,37 +43,53 @@ export default function Dashboard() {
   return (
     <div className="flex items-center justify-center min-h-screen p-8">
       <div className="max-w-4xl">
-        <h1 className="text-3xl font-bold text-gray-800 mb-4">
-          Sample Authentication Protected Route
-        </h1>
-        <p className="text-lg text-gray-600 mb-6">
-          If you see this, you&apos;ve logged in! I hope...
-        </p>
-        <div>
+        <div className="flex justify-center space-x-4 mt-4">
+          <NavLink
+            to="/dashboard"
+            className="inline-flex items-center justify-center bg-white text-blue-500 font-bold uppercase text-sm px-6 py-2 rounded hover:shadow-md hover:bg-blue-600 hover:text-white transition duration-200"
+          >
+            Home
+          </NavLink>
+
+          <NavLink
+            to="/dashboard/availability"
+            className="inline-flex items-center justify-center bg-white text-blue-500 font-bold uppercase text-sm px-6 py-2 rounded hover:shadow-md hover:bg-blue-600 hover:text-white transition duration-200"
+          >
+            My Availability
+          </NavLink>
+
+          {['Manager', 'Administrator'].includes(dbUser.role) && (
+            <>
+              <NavLink
+                to="/employee-list"
+                className="inline-flex items-center justify-center bg-white text-blue-500 font-bold uppercase text-sm px-6 py-2 rounded hover:shadow-md hover:bg-blue-600 hover:text-white transition duration-200"
+              >
+                View Employee List
+              </NavLink>
+
+              <NavLink
+                to="/addEmployee"
+                className="inline-flex items-center justify-center bg-white text-blue-500 font-bold uppercase text-sm px-6 py-2 rounded hover:shadow-md hover:bg-blue-600 hover:text-white transition duration-200"
+              >
+                Add User
+              </NavLink>
+            </>
+          )}
+
           <NavLink
             to="/logout"
-            className="inline-block bg-blue-500 text-white font-bold uppercase text-sm px-6 py-2 rounded hover:bg-blue-600 transition duration-200"
+            className="inline-flex items-center justify-center bg-white text-blue-500 font-bold uppercase text-sm px-6 py-2 rounded hover:shadow-md hover:bg-blue-600 hover:text-white transition duration-200"
           >
             Sign out
           </NavLink>
         </div>
-        <div className="mt-4">
-          <NavLink
-            to="/addEmployee"
-            className="inline-block bg-blue-500 text-white font-bold uppercase text-sm px-6 py-2 rounded hover:bg-blue-600 transition duration-200"
-          >
-            Add User
-          </NavLink>
-        </div>
 
-        <div className="mt-4">
-          <NavLink
-            to="/employee-list"
-            className="inline-block bg-blue-500 text-white font-bold uppercase text-sm px-6 py-2 rounded hover:bg-blue-600 transition duration-200"
-          >
-            Employee List
-          </NavLink>
-        </div>
+        <h1 className="text-3xl font-bold text-gray-800 mb-4 text-center">
+          Welcome {authUser.displayName}
+        </h1>
+        {/* <p className="text-lg text-gray-600 mb-6">
+          If you see this, you&apos;ve logged in! I hope...
+        </p> */}
 
         {nextShift ? (
           <DaySchedule {...nextShift} />
@@ -79,7 +99,7 @@ export default function Dashboard() {
           </p>
         )}
 
-        <div className="mt-8">
+        {/* <div className="mt-8">
           <h4 className="text-xl font-semibold text-gray-700 mb-2">
             RAW AUTH DATA
           </h4>
@@ -94,7 +114,7 @@ export default function Dashboard() {
           <p className="font-mono bg-white p-4 rounded shadow">
             {JSON.stringify(dbUser, null, 2)}
           </p>
-        </div>
+        </div> */}
 
         <Outlet />
       </div>
