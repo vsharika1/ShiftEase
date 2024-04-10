@@ -1,10 +1,7 @@
-import AccountBoxIcon from '@mui/icons-material/AccountBox';
-import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
 
@@ -43,16 +40,10 @@ export default function NavDrawer({ isManager }: Props) {
       <List sx={{ marginTop: 'auto', paddingBottom: 2 }}>
         {/* Profile Button */}
         <ListItem button>
-          <ListItemIcon sx={{ color: 'white' }}>
-            <AccountBoxIcon />
-          </ListItemIcon>
           <ListItemText primary="Profile" />
         </ListItem>
         {/* Log Out Button */}
         <ListItem button>
-          <ListItemIcon sx={{ color: 'white' }}>
-            <ExitToAppIcon />
-          </ListItemIcon>
           <ListItemText primary="Log Out" />
         </ListItem>
       </List>

@@ -30,8 +30,10 @@ export const links: LinksFunction = () => [
 ];
 
 export const meta: MetaFunction = () => [
+  { name: 'viewport', content: 'width=device-width, initial-scale=1' },
   { title: 'ShiftEase' },
   { name: 'description', content: 'Best group project written for CMPT372!' },
+  { charSet: 'utf-8' },
 ];
 
 export const Layout: RemixRoute['Layout'] = function Layout({ children }) {
@@ -40,8 +42,6 @@ export const Layout: RemixRoute['Layout'] = function Layout({ children }) {
   return (
     <html lang="en">
       <head>
-        <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <Meta />
         <Links />
       </head>

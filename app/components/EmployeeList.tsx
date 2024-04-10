@@ -1,3 +1,5 @@
+import { Form, NavLink } from '@remix-run/react';
+
 interface User {
   id: string;
   email: string;
@@ -14,16 +16,6 @@ interface EmployeeListProps {
 const handleMoreInfo = (userId: string) => {
   console.log('More info for user', userId);
   // Implement more info logic here, such as displaying a modal or redirecting to a detailed view
-};
-
-const handleEdit = (userId: string) => {
-  console.log('Edit user', userId);
-  // Implement edit logic here
-};
-
-const handleDelete = (userId: string) => {
-  console.log('Delete user', userId);
-  // Implement delete logic here
 };
 
 export default function EmployeeList({ users }: EmployeeListProps) {
@@ -86,18 +78,21 @@ export default function EmployeeList({ users }: EmployeeListProps) {
                     >
                       More Info
                     </button>
-                    <button
-                      onClick={() => handleEdit(user.id)}
+                    <NavLink
+                      to={`/edit-employee/${encodeURIComponent(user.id)}`}
                       className="text-blue-500 hover:text-blue-700 p-2 mr-2"
                     >
-                      Edit
-                    </button>
-                    <button
-                      onClick={() => handleDelete(user.id)}
-                      className="text-red-500 hover:text-red-700 p-2"
-                    >
-                      Delete
-                    </button>
+                      <strong>EDIT</strong>
+                    </NavLink>
+                    <Form reloadDocument action="/employee-list" method="post">
+                      <input type="hidden" name="userId" value={user.id} />
+                      <button
+                        type="submit"
+                        className="text-red-500 hover:text-red-700 p-2"
+                      >
+                        Delete
+                      </button>
+                    </Form>
                   </td>
                 </tr>
               ))}
