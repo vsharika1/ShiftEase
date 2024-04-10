@@ -1,77 +1,68 @@
+import type { Jsonify } from '@remix-run/server-runtime/dist/jsonify';
+
+import type { Prisma } from '@prisma/client';
 import * as luxon from 'ts-luxon';
 
-interface Props {
-  assignedShifts: {
-    start_time: Date;
-    end_time: Date;
-  };
-}
+type Props = Jsonify<Pick<Prisma.ShiftGetPayload<undefined>, 'start' | 'end'>>;
 
-export default function DaySchedule({ assignedShifts }: Props) {
-  const { start_time, end_time } = assignedShifts;
+const LUXON_BASE_OPTS = {
+  setZone: true,
+} as const;
 
-  const shiftStart = luxon.DateTime.fromJSDate(start_time);
-  const shiftEnd = luxon.DateTime.fromJSDate(end_time);
+export default function DaySchedule({ start, end }: Props) {
+  const shiftStart = luxon.DateTime.fromISO(start, LUXON_BASE_OPTS);
+  const shiftEnd = luxon.DateTime.fromISO(end, LUXON_BASE_OPTS);
 
   // Calculate total minutes in a day
   const totalMinutes = 24 * 60;
   // Calculate the start and end times in minutes from the beginning of the day
-  const shiftStartMinutes = shiftStart.hour * 60 + shiftStart.minute;
-  const shiftEndMinutes = shiftEnd.hour * 60 + shiftEnd.minute;
+  const shiftStartMinutes = shiftStart
+    .diff(shiftStart.startOf('day'))
+    .as('minutes');
   // Calculate shift duration in minutes
-  const shiftDuration = shiftEndMinutes - shiftStartMinutes;
-  // Calculate the left offset and width of the green bar as a percentage of the total day
+  const shiftEndMinutes = shiftEnd.endOf('day').diff(shiftEnd).as('minutes');
+  // Calculate the horizontal offsets of the green bar as a percentage of the total day
   const leftOffset = (shiftStartMinutes / totalMinutes) * 100;
-  const widthPercent = (shiftDuration / totalMinutes) * 100;
+  const rightOffset = (shiftEndMinutes / totalMinutes) * 100;
 
   // Format dates for display
-  const formattedShiftStart = shiftStart.toFormat('HH:mm a');
-  const formattedShiftEnd = shiftEnd.toFormat('HH:mm a');
-  const formattedDate = shiftStart.toFormat('cccc, LLLL dd');
-  const duration = shiftEnd.diff(shiftStart).toFormat("h 'hrs' m 'mins'");
+  const formattedShiftStart = shiftStart.toLocaleString(
+    luxon.DateTime.TIME_SIMPLE,
+  );
+  const formattedShiftEnd = shiftEnd.toLocaleString(luxon.DateTime.TIME_SIMPLE);
+  const formattedDate = shiftStart.toLocaleString({
+    weekday: 'long',
+    month: 'long',
+    day: '2-digit',
+  });
+  const duration = shiftEnd.diff(shiftStart).shiftTo('hours', 'minutes');
 
   return (
-    <div className="max-w-4xl mx-auto mt-10 p-5 bg-white rounded-lg shadow-lg">
+    <div className="max-w-4xl p-5 bg-white rounded-lg shadow-lg">
       <div className="text-lg font-bold mb-5 text-left">{formattedDate}</div>
-      <div
-        className="relative border-2 border-gray-300 rounded overflow-hidden bg-gray-100"
-        style={{ height: '128px', marginTop: '10px' }}
-      >
+      <div className="relative overflow-hidden border-2 border-gray-300 rounded bg-gray-100 h-32 [container-type:size]">
         {/* Shift duration bar */}
         <div
-          className="absolute top-0 bg-green-500 text-black flex items-center justify-center"
+          className="absolute inset-0 bg-green-500 text-black flex items-center justify-center px-2 py-1"
           style={{
-            left: `${leftOffset.toString()}%`,
-            width: `${widthPercent.toString()}%`,
-            height: '100%',
+            left: `${leftOffset}cqw`,
+            right: `${rightOffset}cqw`,
           }}
         >
-          <span className="rounded px-2 py-1 text-xs font-bold">
-            {duration}
+          <span className="text-xs font-bold">
+            {duration.set({ minutes: Math.round(duration.minutes) }).toHuman({
+              unitDisplay: 'short',
+            })}
           </span>
         </div>
       </div>
       {/* Times container */}
-      <div
-        className="relative rounded overflow-hidden"
-        style={{ height: '20px', marginTop: '10px' }}
-      >
-        <div
-          className="absolute bottom-0 w-full flex px-2"
-          style={{
-            left: `${leftOffset.toString()}%`,
-            width: `${widthPercent.toString()}%`,
-            display: 'flex',
-            justifyContent: 'space-between',
-            height: '20px',
-          }}
-        >
-          {/* Shift start time label */}
-          <span className="text-xs font-bold">{formattedShiftStart}</span>
-
-          {/* Shift end time label */}
-          <span className="text-xs font-bold">{formattedShiftEnd}</span>
-        </div>
+      <div className="rounded mt-2 h-5 text-xs font-bold px-2 text-center">
+        {/* Shift start time label */}
+        {formattedShiftStart}
+        &nbsp;-&nbsp;
+        {/* Shift end time label */}
+        {formattedShiftEnd}
       </div>
     </div>
   );

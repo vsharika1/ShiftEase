@@ -1,16 +1,40 @@
 import type { LoaderFunctionArgs } from '@remix-run/node';
+import { json } from '@remix-run/node';
 import { NavLink, Outlet, useLoaderData } from '@remix-run/react';
 
 import { requireAuthedUser } from '~/.server/auth';
+import { prisma } from '~/.server/db';
+import DaySchedule from '~/components/DaySchedule';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const result = await requireAuthedUser(request);
+  const [authUser, dbUser] = await requireAuthedUser(request);
 
-  return result;
+  // Use dbUser.id to query for the user's shifts
+  const currentDate = new Date();
+  const nextAssignment = await prisma.shiftAssignment.findFirst({
+    where: {
+      userId: dbUser.id,
+      shift: {
+        start: {
+          gt: currentDate,
+        },
+      },
+    },
+    include: {
+      shift: true,
+    },
+    orderBy: {
+      shift: {
+        start: 'asc',
+      },
+    },
+  });
+
+  return json({ authUser, dbUser, nextShift: nextAssignment?.shift });
 };
 
 export default function Dashboard() {
-  const [authUser, dbUser] = useLoaderData<typeof loader>();
+  const { authUser, dbUser, nextShift } = useLoaderData<typeof loader>();
 
   return (
     <div className="flex items-center justify-center min-h-screen p-8">
@@ -37,6 +61,24 @@ export default function Dashboard() {
             Add User
           </NavLink>
         </div>
+
+        <div className="mt-4">
+          <NavLink
+            to="/employee-list"
+            className="inline-block bg-blue-500 text-white font-bold uppercase text-sm px-6 py-2 rounded hover:bg-blue-600 transition duration-200"
+          >
+            Employee List
+          </NavLink>
+        </div>
+
+        {nextShift ? (
+          <DaySchedule {...nextShift} />
+        ) : (
+          <p className="text-lg text-center text-gray-600 mt-10">
+            No Upcoming Shifts Available
+          </p>
+        )}
+
         <div className="mt-8">
           <h4 className="text-xl font-semibold text-gray-700 mb-2">
             RAW AUTH DATA

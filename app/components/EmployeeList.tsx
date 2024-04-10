@@ -1,34 +1,27 @@
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
-import InfoIcon from '@mui/icons-material/Info';
-import Tooltip from '@mui/material/Tooltip';
-
 interface User {
-  user_id: number;
+  id: string;
   email: string;
-  role: {
-    role_name: string;
-  };
+  role: string;
   first_name: string;
   last_name: string;
-  contact_number: string;
+  phoneNumber: string;
 }
 
 interface EmployeeListProps {
   users: User[];
 }
 
-const handleMoreInfo = (userId: number) => {
+const handleMoreInfo = (userId: string) => {
   console.log('More info for user', userId);
   // Implement more info logic here, such as displaying a modal or redirecting to a detailed view
 };
 
-const handleEdit = (userId: number) => {
+const handleEdit = (userId: string) => {
   console.log('Edit user', userId);
   // Implement edit logic here
 };
 
-const handleDelete = (userId: number) => {
+const handleDelete = (userId: string) => {
   console.log('Delete user', userId);
   // Implement delete logic here
 };
@@ -44,82 +37,67 @@ export default function EmployeeList({ users }: EmployeeListProps) {
           <table className="leading-normal" style={{ minWidth: '100%' }}>
             <thead>
               <tr>
-                <th
-                  className="border-b-2 border-gray-200 bg-gray-100 text-left text-s font-semibold text-gray-600 uppercase"
-                  style={{ padding: '6px' }}
-                >
-                  User ID
+                <th className="border-b-2 border-gray-200 bg-gray-100 text-left text-s font-semibold text-gray-600 uppercase p-2">
+                  ID
                 </th>
-                <th className="border-b-2 border-gray-200 bg-gray-100 text-left text-s font-semibold text-gray-600 uppercase">
+                <th className="border-b-2 border-gray-200 bg-gray-100 text-left text-s font-semibold text-gray-600 uppercase p-2">
                   Email
                 </th>
-                <th className="border-b-2 border-gray-200 bg-gray-100 text-left text-s font-semibold text-gray-600 uppercase">
+                <th className="border-b-2 border-gray-200 bg-gray-100 text-left text-s font-semibold text-gray-600 uppercase p-2">
                   Role
                 </th>
-                <th className="border-b-2 border-gray-200 bg-gray-100 text-left text-s font-semibold text-gray-600 uppercase">
+                <th className="border-b-2 border-gray-200 bg-gray-100 text-left text-s font-semibold text-gray-600 uppercase p-2">
                   First Name
                 </th>
-                <th className="border-b-2 border-gray-200 bg-gray-100 text-left text-s font-semibold text-gray-600 uppercase">
+                <th className="border-b-2 border-gray-200 bg-gray-100 text-left text-s font-semibold text-gray-600 uppercase p-2">
                   Last Name
                 </th>
-                <th className="border-b-2 border-gray-200 bg-gray-100 text-left text-s font-semibold text-gray-600 uppercase">
+                <th className="border-b-2 border-gray-200 bg-gray-100 text-left text-s font-semibold text-gray-600 uppercase p-2">
                   Contact Number
                 </th>
-                <th className="border-b-2 border-gray-200 bg-gray-100 text-left text-s font-semibold text-gray-600 uppercase" />
+                <th className="border-b-2 border-gray-200 bg-gray-100 text-left text-s font-semibold text-gray-600 uppercase p-2" />
               </tr>
             </thead>
             <tbody>
               {users.map((user) => (
-                <tr key={user.user_id}>
-                  <td
-                    className="border-b border-gray-200 bg-white text-sm"
-                    style={{ padding: '6px' }}
-                  >
-                    {user.user_id}
+                <tr key={user.id}>
+                  <td className="border-b border-gray-200 bg-white text-sm p-2">
+                    {user.id}
                   </td>
-                  <td className="border-b border-gray-200 bg-white text-sm">
+                  <td className="border-b border-gray-200 bg-white text-sm p-2">
                     {user.email}
                   </td>
-                  <td className="border-b border-gray-200 bg-white text-sm">
-                    {user.role.role_name}
+                  <td className="border-b border-gray-200 bg-white text-sm p-2">
+                    {user.role}
                   </td>
-                  <td className="border-b border-gray-200 bg-white text-sm">
+                  <td className="border-b border-gray-200 bg-white text-sm p-2">
                     {user.first_name || 'N/A'}
                   </td>
-                  <td className="border-b border-gray-200 bg-white text-sm">
+                  <td className="border-b border-gray-200 bg-white text-sm p-2">
                     {user.last_name || 'N/A'}
                   </td>
-                  <td className="border-b border-gray-200 bg-white text-sm">
-                    {user.contact_number || 'N/A'}
+                  <td className="border-b border-gray-200 bg-white text-sm p-2">
+                    {user.phoneNumber || 'N/A'}
                   </td>
-                  <td
-                    className="border-b border-gray-200 bg-white text-sm flex justify-start items-center"
-                    style={{ padding: '6px' }}
-                  >
-                    <Tooltip title="More Info">
-                      <button
-                        onClick={() => handleMoreInfo(user.user_id)}
-                        className="text-gray-500 hover:text-gray-700 p-2 mr-2"
-                      >
-                        <InfoIcon fontSize="small" />
-                      </button>
-                    </Tooltip>
-                    <Tooltip title="Edit">
-                      <button
-                        onClick={() => handleEdit(user.user_id)}
-                        className="text-blue-500 hover:text-blue-700 p-2 mr-2"
-                      >
-                        <EditIcon fontSize="small" />
-                      </button>
-                    </Tooltip>
-                    <Tooltip title="Delete">
-                      <button
-                        onClick={() => handleDelete(user.user_id)}
-                        className="text-red-500 hover:text-red-700 p-2"
-                      >
-                        <DeleteIcon fontSize="small" />
-                      </button>
-                    </Tooltip>
+                  <td className="border-b border-gray-200 bg-white text-sm flex justify-start items-center p-2">
+                    <button
+                      onClick={() => handleMoreInfo(user.id)}
+                      className="text-gray-500 hover:text-gray-700 p-2 mr-2"
+                    >
+                      More Info
+                    </button>
+                    <button
+                      onClick={() => handleEdit(user.id)}
+                      className="text-blue-500 hover:text-blue-700 p-2 mr-2"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDelete(user.id)}
+                      className="text-red-500 hover:text-red-700 p-2"
+                    >
+                      Delete
+                    </button>
                   </td>
                 </tr>
               ))}
