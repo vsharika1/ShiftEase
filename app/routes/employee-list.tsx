@@ -1,9 +1,4 @@
-import {
-  json,
-  redirect,
-  type ActionFunction,
-  type LoaderFunctionArgs,
-} from '@remix-run/node';
+import { json, type LoaderFunctionArgs } from '@remix-run/node';
 import { NavLink, useLoaderData } from '@remix-run/react';
 
 import { requireAuthedUser } from '~/.server/auth';
@@ -67,37 +62,6 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
   return json({ dbUser, users: mergedUsers });
 }
-
-export const action: ActionFunction = async ({ request }) => {
-  const formData = await request.formData();
-  const userId = formData.get('userId');
-
-  if (typeof userId === 'string') {
-    // Check if the user exists in your database
-    const dbUser = await prisma.user.findUnique({
-      where: { id: userId },
-    });
-
-    if (dbUser) {
-      // User exists in the database, proceed with deletion
-
-      // Delete the user from your database
-      await prisma.user.delete({
-        where: { id: userId },
-      });
-      console.log(`User ${userId} deleted from database.`);
-    } else {
-      // User does not exist in the database
-      console.log(`User ${userId} not found in database, skipping deletion.`);
-    }
-
-    // Delete the user from Auth0
-    await mgmtClient.users.delete({ id: userId });
-    console.log(`User ${userId} deleted from Auth0.`);
-  }
-
-  return redirect('/employee-list');
-};
 
 export default function EmployeeListDisplay() {
   const { dbUser, users } = useLoaderData<LoaderData>();

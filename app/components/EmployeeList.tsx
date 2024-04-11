@@ -1,4 +1,4 @@
-import { Form, NavLink } from '@remix-run/react';
+import { NavLink } from '@remix-run/react';
 
 interface User {
   id: string;
@@ -79,15 +79,12 @@ export default function EmployeeList({ users }: EmployeeListProps) {
                     >
                       <strong>EDIT</strong>
                     </NavLink>
-                    <Form reloadDocument action="/employee-list" method="post">
-                      <input type="hidden" name="userId" value={user.id} />
-                      <button
-                        type="submit"
-                        className="text-red-500 hover:text-red-700 p-2"
-                      >
-                        Delete
-                      </button>
-                    </Form>
+                    <NavLink
+                      to={`/delete/${encodeURIComponent(user.id)}`}
+                      className="text-red-500 hover:text-red-700 p-2 mr-2"
+                    >
+                      <strong>DELETE</strong>
+                    </NavLink>
                   </td>
                 </tr>
               ))}

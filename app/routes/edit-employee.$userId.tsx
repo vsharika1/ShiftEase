@@ -84,7 +84,7 @@ export const action: ActionFunction = async ({ request }) => {
   });
 
   // Redirect
-  return redirect('/employee-list');
+  return redirect('/dashboard');
 };
 
 export default function EditEmployeeRoute() {
