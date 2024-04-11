@@ -71,7 +71,7 @@ export default function EmployeeListDisplay() {
 
   return (
     <>
-      <div className="flex justify-center space-x-4 mt-4">
+      <div className="flex justify-center space-x-4">
         <NavLink
           to="/dashboard"
           className="inline-flex items-center justify-center bg-white text-blue-500 font-bold uppercase text-sm px-6 py-2 rounded hover:shadow-md hover:bg-blue-600 hover:text-white transition duration-200"
