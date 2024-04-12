@@ -2,6 +2,7 @@ import type { LoaderFunctionArgs } from '@remix-run/node';
 import { NavLink, useRouteLoaderData } from '@remix-run/react';
 
 import { requireAuthedUser } from '~/.server/auth';
+import NavBar from '~/components/NavBar';
 
 import type { loader as parentLoader } from './schedule.coverage';
 
@@ -19,6 +20,7 @@ export default function CoverageRequirementView() {
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
+      <NavBar showEmployeeManagement={true} />
       <h1 className="text-2xl font-bold text-gray-800 mb-6">
         Coverage Requirements
       </h1>

@@ -16,7 +16,26 @@ interface Props {
   formAction: string;
 }
 
-export default function ScheduleCoverageForm({ formAction }: Props) {
+function dbToFormData(
+  coverage?: CoverageRequirementPayload,
+): ScheduleCoverageRequirementsFormData | undefined {
+  if (!coverage) return undefined;
+
+  return {
+    coverageRequirements: coverage.map((c) => ({
+      name: c.name,
+      roleRequirements: c.roleRequirement.map(
+        ({ roleName, roleTargetEmployeeCount, rolePriority }) => ({
+          role: roleName as Role,
+          targetEmployeeCount: roleTargetEmployeeCount,
+          priority: rolePriority,
+        }),
+      ),
+    })),
+  };
+}
+
+export default function ScheduleCoverageForm({ formAction, coverage }: Props) {
   const nav = useNavigation();
   const isSubmitting = nav.formAction === formAction;
 
@@ -27,7 +46,7 @@ export default function ScheduleCoverageForm({ formAction }: Props) {
     formState: { errors },
   } = useRemixForm<ScheduleCoverageRequirementsFormData>({
     resolver: scheduleCoverageRequirementsFormResolver,
-    defaultValues: {
+    defaultValues: dbToFormData(coverage) ?? {
       coverageRequirements: [{ roleRequirements: [] }],
     },
     shouldUseNativeValidation: true,
@@ -37,8 +56,6 @@ export default function ScheduleCoverageForm({ formAction }: Props) {
     control,
     name: 'coverageRequirements',
   });
-
-  console.dir(errors);
 
   return (
     <div className="max-w-6xl px-4 py-8">
@@ -75,7 +92,7 @@ export default function ScheduleCoverageForm({ formAction }: Props) {
                     {
                       role: Role.Associate,
                       targetEmployeeCount: 1,
-                      priority: '',
+                      priority: 'PRIORITY_LOW',
                     },
                   ],
                 });
