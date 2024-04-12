@@ -67,6 +67,12 @@ export default function EmployeeList({ users }: EmployeeListProps) {
                 </td>
                 <td className="border-b border-gray-200 p-4 text-sm text-gray-700 flex items-center space-x-4">
                   <NavLink
+                    to={`/employeeInfo/${encodeURIComponent(user.id)}`}
+                    className="text-blue-600 hover:text-blue-800"
+                  >
+                    More Info
+                  </NavLink>
+                  <NavLink
                     to={`/edit-employee/${encodeURIComponent(user.id)}`}
                     className="text-blue-600 hover:text-blue-800"
                   >
