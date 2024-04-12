@@ -1,30 +1,11 @@
-import { json, type LoaderFunctionArgs } from '@remix-run/node';
+import type { LoaderFunctionArgs } from '@remix-run/node';
 
 import { requireAuthedUser } from '~/.server/auth';
 import { prisma } from '~/.server/db';
-
-interface Employee {
-  id: string;
-  role: string;
-  availability: { start: Date; end: Date }[];
-}
-
-interface Shift {
-  id: string;
-  start: Date;
-  end: Date;
-  coverageRequirement: {
-    name: string;
-    roleRequirement: {
-      roleName: string;
-      roleTargetEmployeeCount: number;
-      rolePriority: string;
-    }[];
-  };
-}
+import type { ORApiResponse } from '~/types/ORAPI';
 
 async function fetchDataFromDatabase() {
-  const users: Employee[] = await prisma.user.findMany({
+  const users = await prisma.user.findMany({
     select: {
       id: true,
       role: true,
@@ -37,7 +18,7 @@ async function fetchDataFromDatabase() {
     },
   });
 
-  const shifts: Shift[] = (await prisma.shift.findMany({
+  const shifts = await prisma.shift.findMany({
     include: {
       coverageRequirement: {
         include: {
@@ -45,7 +26,7 @@ async function fetchDataFromDatabase() {
         },
       },
     },
-  })) as unknown as Shift[];
+  });
 
   return { users, shifts };
 }
@@ -71,18 +52,22 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   await requireAuthedUser(request);
   const { users, shifts } = await fetchDataFromDatabase();
 
+  const covReqs = shifts
+    .filter((shift) => shift.coverageRequirement)
+    .map(({ id, coverageRequirement }) => [id, coverageRequirement!] as const);
+
   const userRoles = users.map((user) => user.role);
 
-  const shiftRequirementRoles = shifts.flatMap((shift) =>
-    shift.coverageRequirement.roleRequirement.map((req) => req.roleName),
-  );
+  const shiftRequirementRoles = covReqs
+    .map(([, covReq]) => covReq)
+    .flatMap((covReq) => covReq.roleRequirement.map((req) => req.roleName));
 
   const allRoleIds = Array.from(
     new Set([...userRoles, ...shiftRequirementRoles]),
   );
 
   const apiPayload = {
-    requestId: 'contact_center_examples',
+    requestId: 'best_request_id',
     solve_parameters: { time_limit: { seconds: 60 } },
     employees: users.map((user) => ({
       id: user.id,
@@ -105,26 +90,22 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
       startDateTime: dateTimeFormat(new Date(shift.start)),
       endDateTime: dateTimeFormat(new Date(shift.end)),
     })),
-    coverageRequirements: shifts.map((shift) => {
-      const roleRequirements = shift.coverageRequirement.roleRequirement.map(
-        (role) => {
-          const { roleName, roleTargetEmployeeCount, rolePriority } = role;
-          return {
-            role_id: roleName,
-            target_employee_count: roleTargetEmployeeCount,
-            priority: rolePriority,
-          };
-        },
-      );
+    coverageRequirements: covReqs.map(([shiftId, covReq]) => {
+      const roleRequirements = covReq.roleRequirement.map((role) => {
+        const { roleName, roleTargetEmployeeCount, rolePriority } = role;
+        return {
+          role_id: roleName,
+          target_employee_count: roleTargetEmployeeCount,
+          priority: rolePriority,
+        };
+      });
       return {
-        shiftIds: [shift.id],
+        shiftIds: [shiftId],
         roleRequirements,
       };
     }),
     role_ids: allRoleIds,
   };
-
-  console.log(JSON.stringify(apiPayload));
 
   const apiKey = process.env.GOOGLE_OPERATIONS_RESEARCH_API_KEY;
   if (!apiKey) {
@@ -145,11 +126,19 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   });
 
   if (!apiResponse.ok) {
-    throw new Error(`API responded with status: ${apiResponse.status}`);
+    throw new Error(`API errored with status: ${apiResponse.status}`);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const apiResponseData = await apiResponse.json();
+  const apiResponseData = (await apiResponse.json()) as ORApiResponse;
 
-  return json(apiResponseData);
+  return prisma.$transaction(
+    apiResponseData.shiftAssignments.map(
+      ({ employeeId: userId, shiftId, roleId }) =>
+        prisma.shiftAssignment.upsert({
+          where: { id: { shiftId, userId } },
+          update: { roleId },
+          create: { userId, shiftId, roleId },
+        }),
+    ),
+  );
 };
