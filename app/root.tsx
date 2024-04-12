@@ -49,7 +49,7 @@ export const Layout: RemixRoute['Layout'] = function Layout({ children }) {
         <motion.div
           layoutRoot
           layoutScroll
-          className="max-w-full w-[64rem] mx-auto font-sans h-[100vh] flex flex-col justify-center"
+          className="max-w-full w-[74rem] mx-auto font-sans h-[100vh] flex flex-col justify-center"
         >
           {children}
         </motion.div>

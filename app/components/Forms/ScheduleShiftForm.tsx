@@ -1,4 +1,4 @@
-import { Form, useNavigation } from '@remix-run/react';
+import { Form, NavLink, useNavigation } from '@remix-run/react';
 
 import { useFieldArray } from 'react-hook-form';
 import { useRemixForm } from 'remix-hook-form';
@@ -56,33 +56,58 @@ export default function ScheduleShiftForm({
   });
 
   return (
-    <Form action={formAction} onSubmit={handleSubmit}>
-      <h1>Edit Shifts</h1>
-      {fields.map((field, index) => (
-        <ScheduleShiftFieldset
-          key={field.id}
-          requirements={requirements}
-          register={register}
-          index={index}
-          remove={remove}
-          value={watchShift[index]!}
-          errors={errors}
-        />
-      ))}
-      <button
-        type="button"
-        onClick={() => {
-          const dt = new Date(Date.now()).toISOString();
-          append({
-            start: isoToDatetimeLocal(dt),
-            end: isoToDatetimeLocal(dt),
-          });
-        }}
-        className="text-blue-500 uppercase font-bold"
+    <div className="max-w-6xl overflow-y-auto max-h-[95vh]">
+      <Form
+        action={formAction}
+        onSubmit={handleSubmit}
+        className="bg-white p-8 rounded-lg shadow-md"
       >
-        Add Shift
-      </button>
-      <button disabled={isSubmitting}>Save</button>
-    </Form>
+        <h1 className="text-2xl font-bold text-gray-900 mt-0 mb-6">
+          Edit Shifts
+        </h1>
+        <div className="pr-2">
+          {' '}
+          {fields.map((field, index) => (
+            <ScheduleShiftFieldset
+              key={field.id}
+              requirements={requirements}
+              register={register}
+              index={index}
+              remove={remove}
+              value={watchShift[index]!}
+              errors={errors}
+            />
+          ))}
+        </div>
+        <div className="flex justify-between items-center mt-6 space-x-4">
+          <NavLink
+            to="/schedule/shift"
+            className="bg-gray-500 hover:bg-gray-600 text-white font-bold uppercase text-sm px-6 py-2 rounded shadow hover:shadow-md transition duration-300 ease-in-out"
+          >
+            Cancel
+          </NavLink>
+          <button
+            type="button"
+            onClick={() => {
+              const dt = new Date(Date.now()).toISOString();
+              append({
+                start: isoToDatetimeLocal(dt),
+                end: isoToDatetimeLocal(dt),
+              });
+            }}
+            className="bg-blue-500 hover:bg-blue-600 text-white font-bold uppercase text-sm px-6 py-2 rounded shadow hover:shadow-lg transition duration-300 ease-in-out"
+          >
+            Add Shift
+          </button>
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className="bg-green-500 hover:bg-green-600 text-white font-bold uppercase text-sm px-6 py-2 rounded shadow hover:shadow-lg transition duration-300 ease-in-out disabled:bg-green-300"
+          >
+            {isSubmitting ? 'Saving...' : 'Save'}
+          </button>
+        </div>
+      </Form>
+    </div>
   );
 }

@@ -30,7 +30,7 @@ export default function AddEmployeeForm() {
             </label>
             <input
               {...register('email')}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
               id="email"
               type="email"
               autoComplete="off"
@@ -64,12 +64,18 @@ export default function AddEmployeeForm() {
             >
               Role:
             </label>
-            <input
+            <select
               {...register('role')}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
               id="role"
-              autoComplete="off"
-            />
+              defaultValue=""
+            >
+              <option value="" disabled>
+                Select role
+              </option>
+              <option value="Manager">Manager</option>
+              <option value="Associate">Associate</option>
+            </select>
             {errors.role && (
               <p className="text-red-500">{errors.role.message}</p>
             )}
@@ -87,6 +93,9 @@ export default function AddEmployeeForm() {
               id="first_name"
               autoComplete="off"
             />
+            {errors.given_name && (
+              <p className="text-red-500">{errors.given_name.message}</p>
+            )}
           </div>
           <div className="mb-4">
             <label
@@ -101,6 +110,9 @@ export default function AddEmployeeForm() {
               id="last_name"
               autoComplete="off"
             />
+            {errors.family_name && (
+              <p className="text-red-500">{errors.family_name.message}</p>
+            )}
           </div>
           <div className="mb-4">
             <label
@@ -110,14 +122,14 @@ export default function AddEmployeeForm() {
               Contact Number:
             </label>
             <input
-              {...register('phone_number')}
+              {...register('phoneNumber')}
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="contact_number"
               type="tel"
               autoComplete="off"
             />
-            {errors.phone_number && (
-              <p className="text-red-500">{errors.phone_number.message}</p>
+            {errors.phoneNumber && (
+              <p className="text-red-500">{errors.phoneNumber.message}</p>
             )}
           </div>
           <div className="flex justify-end">

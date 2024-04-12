@@ -78,6 +78,12 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 export default function EmployeeInfoRoute() {
   const { user, availability, shifts } = useLoaderData<LoaderData>();
   return (
-    <EmployeeInfoData user={user} availability={availability} shifts={shifts} />
+    <div className="flex justify-center">
+      <EmployeeInfoData
+        user={user}
+        availability={availability}
+        shifts={shifts}
+      />
+    </div>
   );
 }

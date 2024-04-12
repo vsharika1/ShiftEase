@@ -57,7 +57,10 @@ export default function Dashboard() {
           >
             Sign out
           </NavLink>
-        </div>
+        </div>{' '}
+        <h1 className="text-3xl font-bold text-gray-800 mb-4 text-center">
+          Welcome {displayName}
+        </h1>
         {nextShift ? (
           <DaySchedule {...nextShift} />
         ) : (
