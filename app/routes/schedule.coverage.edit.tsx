@@ -33,19 +33,23 @@ export async function action({ request }: ActionFunctionArgs) {
 
   if (errors) return json({ errors, defaultValues });
 
-  // const toCreate: Prisma.Args<typeof prisma.coverageRequirement, 'create'>[] =
-  //   [];
-  // const toUpdate: Prisma.Args<typeof prisma.coverageRequirement, 'update'>[] =
-  //   [];
-
   const toUpsert: Prisma.Args<typeof prisma.coverageRequirement, 'upsert'>[] =
     [];
 
-  function genCreate(
+  function genCoC(
+    covName: string,
     roleRequirements: ScheduleCoverageRequirementsFormData['coverageRequirements'][number]['roleRequirements'],
-  ): Prisma.RoleOnCoverageUpdateManyWithoutCoverageNestedInput {
-    return {
-      create: roleRequirements.map((rr) => ({
+  ): Prisma.RoleOnCoverageCreateOrConnectWithoutCoverageInput[] {
+    return roleRequirements.map((rr) => ({
+      where: {
+        roleName_roleTargetEmployeeCount_rolePriority_coverageName: {
+          roleName: rr.role,
+          roleTargetEmployeeCount: rr.targetEmployeeCount,
+          rolePriority: rr.priority,
+          coverageName: covName,
+        },
+      },
+      create: {
         roleReq: {
           connectOrCreate: {
             where: {
@@ -62,8 +66,8 @@ export async function action({ request }: ActionFunctionArgs) {
             },
           },
         },
-      })),
-    };
+      },
+    }));
   }
 
   for (const { name, roleRequirements } of data.coverageRequirements) {
@@ -71,17 +75,22 @@ export async function action({ request }: ActionFunctionArgs) {
       where: { name },
       create: {
         name,
-        roleRequirement: genCreate(roleRequirements),
+        roleRequirement: {
+          connectOrCreate: genCoC(name, roleRequirements),
+        },
       },
       update: {
-        roleRequirement: genCreate(roleRequirements),
+        roleRequirement: {
+          connectOrCreate: genCoC(name, roleRequirements),
+        },
       },
     });
   }
 
-  await prisma.$transaction(
-    toUpsert.map((arg) => prisma.coverageRequirement.upsert(arg)),
-  );
+  await prisma.$transaction([
+    prisma.coverageRequirement.deleteMany(),
+    ...toUpsert.map((arg) => prisma.coverageRequirement.upsert(arg)),
+  ]);
 
   return redirect('/schedule/coverage');
 }
