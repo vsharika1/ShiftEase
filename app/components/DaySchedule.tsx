@@ -38,7 +38,7 @@ export default function DaySchedule({ start, end }: Props) {
   const duration = shiftEnd.diff(shiftStart).shiftTo('hours', 'minutes');
 
   return (
-    <div className="max-w-4xl p-5 bg-white rounded-lg shadow-lg">
+    <div className="max-w-4xl w-full p-5 bg-white rounded-lg shadow-lg">
       <div className="text-lg font-bold mb-5 text-left">{formattedDate}</div>
       <div className="relative overflow-hidden border-2 border-gray-300 rounded bg-gray-100 h-32 [container-type:size]">
         {/* Shift duration bar */}
