@@ -1,5 +1,5 @@
 import type { LoaderFunctionArgs } from '@remix-run/node';
-import { Link, NavLink, useRouteLoaderData } from '@remix-run/react';
+import { Form, Link, NavLink, useRouteLoaderData } from '@remix-run/react';
 
 import { DateTime, Interval } from 'ts-luxon';
 
@@ -60,6 +60,14 @@ export default function ScheduleShiftView() {
                       {s.coverageRequirementId}
                     </span>
                     {'}'}
+                    <Form method="post" reloadDocument>
+                      <button
+                        formAction={`/schedule/shift/${s.id}/delete`}
+                        className="text-red-500 uppercase font-bold"
+                      >
+                        Delete
+                      </button>
+                    </Form>
                   </li>
                 );
               })}

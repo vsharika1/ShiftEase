@@ -25,7 +25,6 @@ export default function ShiftFieldset<R extends ShiftFormMethods['register']>({
   requirements,
   register,
   index,
-  remove,
   errors,
   value,
 }: Props<R>) {
@@ -120,14 +119,6 @@ export default function ShiftFieldset<R extends ShiftFormMethods['register']>({
         ) : (
           <h6 className="text-gray-700">No Requirements Available</h6>
         ))}
-
-      <button
-        type="button"
-        onClick={() => remove(index)}
-        className="text-red-500 hover:text-red-700 uppercase font-bold bg-transparent hover:bg-red-100 px-3 py-2 rounded"
-      >
-        Delete
-      </button>
     </fieldset>
   );
 }
