@@ -26,7 +26,7 @@ model ShiftAssignment {
   user   User   @relation(fields: [userId], references: [id])
 
   shiftId String
-  shift   Shift  @relation(fields: [shiftId], references: [id])
+  shift   Shift  @relation(fields: [shiftId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
 
@@ -108,10 +108,10 @@ model RoleOnCoverage {
   roleName                String
   roleTargetEmployeeCount Int
   rolePriority            String
-  roleReq                 RoleRequirement @relation(fields: [roleName, roleTargetEmployeeCount, rolePriority], references: [role, targetEmployeeCount, priority], onDelete: Cascade, onUpdate: Cascade)
+  roleReq                 RoleRequirement @relation(fields: [roleName, roleTargetEmployeeCount, rolePriority], references: [role, targetEmployeeCount, priority], onDelete: Cascade)
 
   coverageName String
-  coverage     CoverageRequirement @relation(fields: [coverageName], references: [name], onDelete: Cascade, onUpdate: Cascade)
+  coverage     CoverageRequirement @relation(fields: [coverageName], references: [name], onDelete: Cascade)
 
   @@id([roleName, roleTargetEmployeeCount, rolePriority, coverageName])
 }
