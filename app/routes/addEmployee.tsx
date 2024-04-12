@@ -27,7 +27,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
   if (errors) return json({ errors, defaultValues });
 
-  const { email, password, given_name, family_name, phone_number } = data;
+  const { email, password, given_name, family_name, phoneNumber } = data;
 
   const { data: authUser } = await mgmtClient.users.create({
     email,
@@ -36,8 +36,6 @@ export async function action({ request }: ActionFunctionArgs) {
     family_name,
     connection: 'Username-Password-Authentication',
   });
-
-  const phoneNumber = phone_number ?? '';
 
   await prisma.user.create({
     data: {

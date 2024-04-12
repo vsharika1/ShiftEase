@@ -15,7 +15,7 @@ interface EmployeeListProps {
 
 export default function EmployeeList({ users }: EmployeeListProps) {
   return (
-    <div className="max-w-5xl mx-auto mt-5">
+    <div className="max-w-7xl mx-auto mt-5">
       <h1 className="text-3xl font-bold text-gray-900 mb-6 text-center">
         Employee Directory
       </h1>

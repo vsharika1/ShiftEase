@@ -9,15 +9,28 @@ import { z } from 'zod';
 
 import type { prisma } from '~/.server/db';
 
-type DBUserCreate = Pick<Prisma.UserCreateInput, 'role'>;
+type DBUserCreate = Pick<Prisma.UserCreateInput, 'role' | 'phoneNumber'>;
 
 export const UserSubmission = z.object({
-  email: z.string().email(),
-  password: z.string().min(8),
-  role: z.string().optional(), // TODO: change to enum with DB
-  given_name: z.string().optional(),
-  family_name: z.string().optional(),
-  phone_number: z.string().optional(),
+  email: z.string().email('Please provide a valid email.'),
+  password: z
+    .string()
+    .min(8, 'Password must be at least 8 characters long')
+    .regex(/[A-Z]/u, 'Password must contain at least one uppercase letter')
+    .regex(/[a-z]/u, 'Password must contain at least one lowercase letter')
+    .regex(/[0-9]/u, 'Password must contain at least one number')
+    .regex(
+      /[@$!%*?&]/u,
+      'Password must contain at least one special character like @$!%*?&',
+    ),
+  role: z
+    .enum(['Manager', 'Associate'])
+    .refine((role) => ['Manager', 'Associate'].includes(role), {
+      message: "Role must be either 'Manager' or 'Associate'.",
+    }),
+  given_name: z.string().min(1, 'Given name is required.'),
+  family_name: z.string().min(1, 'Family name is required.'),
+  phoneNumber: z.string(),
 }) satisfies z.Schema<Omit<UserCreate, 'connection'> & DBUserCreate>;
 
 export type UserFormData = z.infer<typeof UserSubmission>;
