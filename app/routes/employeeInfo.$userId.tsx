@@ -1,5 +1,5 @@
 import { json, type LoaderFunctionArgs } from '@remix-run/node';
-import { useLoaderData } from '@remix-run/react';
+import { NavLink, useLoaderData } from '@remix-run/react';
 
 import { requireAuthedUser } from '~/.server/auth';
 import { mgmtClient } from '~/.server/auth0';
@@ -78,12 +78,22 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 export default function EmployeeInfoRoute() {
   const { user, availability, shifts } = useLoaderData<LoaderData>();
   return (
-    <div className="flex justify-center">
-      <EmployeeInfoData
-        user={user}
-        availability={availability}
-        shifts={shifts}
-      />
+    <div className="max-w-4xl mx-auto px-4 py-8">
+      <div className="flex justify-center">
+        <EmployeeInfoData
+          user={user}
+          availability={availability}
+          shifts={shifts}
+        />
+      </div>
+      <div className="flex justify-between items-center mt-6">
+        <NavLink
+          to="/employee-list"
+          className="bg-blue-500 text-white font-bold uppercase text-sm px-6 py-2 rounded hover:bg-blue-600 transition duration-300"
+        >
+          Back
+        </NavLink>
+      </div>
     </div>
   );
 }
