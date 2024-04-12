@@ -17,22 +17,22 @@ import type { loader as parentLoader } from './schedule.shift';
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const userInfo = await requireAuthedUser(request);
-  return json({ userInfo });
+  return json({
+    showManagementNav: hasRole(userInfo, ['Manager', 'Administrator']),
+  });
 }
 
 const LUXON_BASE_OPTS = { setZone: true } as const;
 
 export default function ScheduleShiftView() {
   const data = useRouteLoaderData<typeof parentLoader>('routes/schedule.shift');
-  const { userInfo } = useLoaderData<typeof loader>();
+  const { showManagementNav } = useLoaderData<typeof loader>();
 
   if (!data) throw new Error('Parent data not loaded');
 
   return (
     <>
-      <NavBar
-        showEmployeeManagement={hasRole(userInfo, ['Manager', 'Administrator'])}
-      />
+      <NavBar showEmployeeManagement={showManagementNav} />
       <div className="max-w-6xl flex justify-center">
         <div>
           <h1 className="text-3xl font-bold text-gray-900 mb-6 text-center">

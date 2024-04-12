@@ -33,24 +33,20 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   });
 
   return json({
-    userInfo,
+    showManagementNav: hasRole(userInfo, ['Manager', 'Administrator']),
+    displayName: userInfo[0].displayName,
     nextShift: nextAssignment?.shift,
   });
 };
 
 export default function Dashboard() {
-  const { userInfo, nextShift } = useLoaderData<typeof loader>();
-  const { displayName } = userInfo[0];
+  const { showManagementNav, displayName, nextShift } =
+    useLoaderData<typeof loader>();
 
   return (
     <div className="flex items-center justify-center min-h-screen p-8">
       <div className="max-w-4xl">
-        <NavBar
-          showEmployeeManagement={hasRole(userInfo, [
-            'Manager',
-            'Administrator',
-          ])}
-        />{' '}
+        <NavBar showEmployeeManagement={showManagementNav} />{' '}
         <h1 className="text-3xl font-bold text-gray-800 mb-4 text-center">
           Welcome {displayName}
         </h1>
