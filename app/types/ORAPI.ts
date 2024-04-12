@@ -6,7 +6,7 @@ interface ShiftAssignments {
   roleId: string;
 }
 
-interface ShiftInput {
+export interface ORApiResponse {
   solutionStatus: string;
   shiftAssignments: ShiftAssignments[];
 }
@@ -20,4 +20,4 @@ export const OrApiResponseSchema = z.object({
       roleId: z.string(),
     }),
   ),
-}) satisfies z.Schema<ShiftInput>;
+}) satisfies z.Schema<ORApiResponse>;
