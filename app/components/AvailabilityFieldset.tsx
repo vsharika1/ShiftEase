@@ -1,7 +1,7 @@
 import type { UseFieldArrayReturn } from 'react-hook-form';
 import type { useRemixForm } from 'remix-hook-form';
 
-import type { AvailabilityFormData } from '~/types/form/AvailibilitySubmission';
+import type { AvailabilityFormData } from '~/types/form/AvailabilitySubmission';
 import { datetimeLocalToISO } from '~/utils';
 
 type AvailabilityFormMethods = ReturnType<

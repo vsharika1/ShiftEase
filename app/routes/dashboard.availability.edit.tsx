@@ -11,7 +11,7 @@ import AvailabilityForm from '~/components/Forms/AvailabilityForm';
 import {
   availabilityFormResolver,
   type AvailabilityFormData,
-} from '~/types/form/AvailibilitySubmission';
+} from '~/types/form/AvailabilitySubmission';
 
 import type { loader as parentLoader } from './dashboard.availability';
 

@@ -38,6 +38,7 @@ export const SpanSingleDay: Story = {
       createdAt: new Date('2024-03-15T15:00:00Z'),
       updatedAt: new Date('2024-03-15T15:00:00Z'),
       createdById: '018e54e3-0520-7a91-8250-1d8f542c48e4',
+      coverageRequirementId: '',
     },
   },
 };
@@ -51,6 +52,7 @@ export const Span25Hours: Story = {
       createdAt: new Date('2024-03-15T15:00:00Z'),
       updatedAt: new Date('2024-03-15T15:00:00Z'),
       createdById: '018e54e3-0520-7a91-8250-1d8f542c48e4',
+      coverageRequirementId: '',
     },
   },
 };

@@ -90,28 +90,16 @@ model ShiftSwapRequest {
 }
 
 model CoverageRequirement {
-  name            String           @id
-  roleRequirement RoleOnCoverage[]
+  name            String            @id
+  roleRequirement RoleRequirement[]
   Shift           Shift[]
 }
 
 model RoleRequirement {
-  role                String
-  targetEmployeeCount Int
-  priority            String
-  coverageRequirement RoleOnCoverage[]
+  targetEmployeeCount   Int
+  priority              String
+  coverageRequirementId String
+  coverageRequirement   CoverageRequirement @relation(fields: [coverageRequirementId], references: [name])
 
-  @@id([role, targetEmployeeCount, priority])
-}
-
-model RoleOnCoverage {
-  roleName                String
-  roleTargetEmployeeCount Int
-  rolePriority            String
-  roleReq                 RoleRequirement @relation(fields: [roleName, roleTargetEmployeeCount, rolePriority], references: [role, targetEmployeeCount, priority])
-
-  coverageName String
-  coverage     CoverageRequirement @relation(fields: [coverageName], references: [name])
-
-  @@id([roleName, roleTargetEmployeeCount, rolePriority, coverageName])
+  @@id([targetEmployeeCount, priority])
 }

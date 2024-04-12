@@ -45,13 +45,6 @@ export default function Dashboard() {
       <div className="max-w-4xl">
         <div className="flex justify-center space-x-4">
           <NavLink
-            to="/dashboard"
-            className="inline-flex items-center justify-center bg-white text-blue-500 font-bold uppercase text-sm px-6 py-2 rounded hover:shadow-md hover:bg-blue-600 hover:text-white transition duration-200"
-          >
-            Home
-          </NavLink>
-
-          <NavLink
             to="/dashboard/availability"
             className="inline-flex items-center justify-center bg-white text-blue-500 font-bold uppercase text-sm px-6 py-2 rounded hover:shadow-md hover:bg-blue-600 hover:text-white transition duration-200"
           >
@@ -66,7 +59,12 @@ export default function Dashboard() {
               >
                 View Employee List
               </NavLink>
-
+              <NavLink
+                to="/schedule/shift"
+                className="inline-flex items-center justify-center bg-white text-blue-500 font-bold uppercase text-sm px-6 py-2 rounded hover:shadow-md hover:bg-blue-600 hover:text-white transition duration-200"
+              >
+                Manage Shifts
+              </NavLink>
               <NavLink
                 to="/addEmployee"
                 className="inline-flex items-center justify-center bg-white text-blue-500 font-bold uppercase text-sm px-6 py-2 rounded hover:shadow-md hover:bg-blue-600 hover:text-white transition duration-200"
@@ -75,7 +73,11 @@ export default function Dashboard() {
               </NavLink>
             </>
           )}
-
+        </div>{' '}
+        <h1 className="text-3xl font-bold text-gray-800 mb-4 text-center">
+          Welcome {authUser.displayName}
+        </h1>
+        <div className="flex justify-center space-x-4 mt-4">
           <NavLink
             to="/logout"
             className="inline-flex items-center justify-center bg-white text-blue-500 font-bold uppercase text-sm px-6 py-2 rounded hover:shadow-md hover:bg-blue-600 hover:text-white transition duration-200"
@@ -83,14 +85,6 @@ export default function Dashboard() {
             Sign out
           </NavLink>
         </div>
-
-        <h1 className="text-3xl font-bold text-gray-800 mb-4 text-center">
-          Welcome {authUser.displayName}
-        </h1>
-        {/* <p className="text-lg text-gray-600 mb-6">
-          If you see this, you&apos;ve logged in! I hope...
-        </p> */}
-
         {nextShift ? (
           <DaySchedule {...nextShift} />
         ) : (
@@ -98,24 +92,6 @@ export default function Dashboard() {
             No Upcoming Shifts Available
           </p>
         )}
-
-        {/* <div className="mt-8">
-          <h4 className="text-xl font-semibold text-gray-700 mb-2">
-            RAW AUTH DATA
-          </h4>
-          <p className="font-mono bg-white p-4 rounded shadow">
-            {JSON.stringify(authUser, null, 2)}
-          </p>
-        </div>
-        <div className="mt-6">
-          <h4 className="text-xl font-semibold text-gray-700 mb-2">
-            RAW DB DATA
-          </h4>
-          <p className="font-mono bg-white p-4 rounded shadow">
-            {JSON.stringify(dbUser, null, 2)}
-          </p>
-        </div> */}
-
         <Outlet />
       </div>
     </div>

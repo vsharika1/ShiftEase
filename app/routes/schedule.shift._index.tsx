@@ -1,15 +1,17 @@
-import type { ActionFunctionArgs, LoaderFunctionArgs } from '@remix-run/node';
-import { json, redirect } from '@remix-run/node';
-import { NavLink, useLoaderData } from '@remix-run/react';
+import type { LoaderFunctionArgs } from '@remix-run/node';
+import { json } from '@remix-run/node';
+import {
+  Link,
+  NavLink,
+  useLoaderData,
+  useRouteLoaderData,
+} from '@remix-run/react';
 
-import { getValidatedFormData } from 'remix-hook-form';
+import { DateTime, Interval } from 'ts-luxon';
 
 import { requireAuthedUser } from '~/.server/auth';
-import { mgmtClient } from '~/.server/auth0';
-import { prisma } from '~/.server/db';
-import AddEmployeeForm from '~/components/AddEmployeeForm';
-import type { UserFormData } from '~/types/form/UserSubmission';
-import { userFormResolver } from '~/types/form/UserSubmission';
+
+import type { loader as parentLoader } from './schedule.shift';
 
 interface DBUser {
   id: string;
@@ -22,50 +24,27 @@ interface LoaderData {
 }
 
 export async function loader({ request }: LoaderFunctionArgs) {
+  /**
+   * Must guard child route even if parent route is already guarded
+   * as Remix calls all loaders in parallel.
+   */
   const [, dbUser] = await requireAuthedUser(request);
   return json({ dbUser });
 }
 
-export async function action({ request }: ActionFunctionArgs) {
-  const {
-    errors,
-    data,
-    receivedValues: defaultValues,
-  } = await getValidatedFormData<UserFormData>(request, userFormResolver);
+const LUXON_BASE_OPTS = { setZone: true } as const;
 
-  if (errors) return json({ errors, defaultValues });
-
-  const { email, password, given_name, family_name, phone_number } = data;
-
-  const { data: authUser } = await mgmtClient.users.create({
-    email,
-    password,
-    given_name,
-    family_name,
-    connection: 'Username-Password-Authentication',
-  });
-
-  const phoneNumber = phone_number ?? '';
-
-  await prisma.user.create({
-    data: {
-      id: authUser.user_id,
-      role: data.role,
-      phoneNumber,
-    },
-  });
-
-  return redirect('/dashboard'); // TODO: changes this once we have an employee list route
-}
-
-export default function AddEmployeeRoute() {
+export default function ScheduleShiftView() {
+  const data = useRouteLoaderData<typeof parentLoader>('routes/schedule.shift');
   const { dbUser } = useLoaderData<LoaderData>();
   const userHasAccess =
     dbUser.role === 'Manager' || dbUser.role === 'Administrator';
 
+  if (!data) throw new Error('Parent data not loaded');
+
   return (
     <>
-      <div className="flex justify-center space-x-4 mb-4">
+      <div className="flex justify-center space-x-4">
         <NavLink
           to="/dashboard"
           className="inline-flex items-center justify-center bg-white text-blue-500 font-bold uppercase text-sm px-6 py-2 rounded hover:shadow-md hover:bg-blue-600 hover:text-white transition duration-200"
@@ -111,8 +90,46 @@ export default function AddEmployeeRoute() {
         </NavLink>
       </div>
       {userHasAccess ? (
-        <div className="flex justify-center mt-4">
-          <AddEmployeeForm />
+        <div className="max-w-6xl flex justify-center">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900 mb-6 text-center">
+              Shifts
+            </h1>
+            <div className="flex space-x-4  m-4">
+              <NavLink
+                to="/schedule/coverage"
+                className="inline-block bg-blue-500 text-white font-bold uppercase text-sm px-6 py-2 rounded hover:bg-blue-600 transition duration-200"
+              >
+                Manage Shift Requirements
+              </NavLink>
+              <NavLink
+                to="/schedule/coverage/ORAPI"
+                className="inline-block bg-blue-500 text-white font-bold uppercase text-sm px-6 py-2 rounded hover:bg-blue-600 transition duration-200"
+              >
+                Generate Schedule
+              </NavLink>
+            </div>
+            <ul className="bg-slate-100 rounded-lg p-4 shadow-lg divide-y divide-slate-200">
+              {data.shifts.map((s) => {
+                const startDate = DateTime.fromISO(s.start, LUXON_BASE_OPTS);
+                const endDate = DateTime.fromISO(s.end, LUXON_BASE_OPTS);
+                const duration = Interval.fromDateTimes(startDate, endDate)
+                  .toDuration()
+                  .shiftTo('hours', 'minutes');
+                return (
+                  <li key={s.id}>
+                    {startDate.toLocaleString(
+                      DateTime.DATETIME_MED_WITH_WEEKDAY,
+                    )}{' '}
+                    for {duration.toHuman()} {'{'}
+                    {s.coverageRequirementId}
+                    {'}'}
+                  </li>
+                );
+              })}
+            </ul>
+            <Link to="/schedule/shift/edit">Edit Shift</Link>
+          </div>
         </div>
       ) : (
         <div className="mt-10 p-6 max-w-lg mx-auto bg-red-100 border-l-4 border-red-500 text-red-700">

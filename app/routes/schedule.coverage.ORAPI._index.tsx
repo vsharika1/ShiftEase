@@ -1,15 +1,10 @@
-import type { ActionFunctionArgs, LoaderFunctionArgs } from '@remix-run/node';
-import { json, redirect } from '@remix-run/node';
-import { NavLink, useLoaderData } from '@remix-run/react';
-
-import { getValidatedFormData } from 'remix-hook-form';
+import type { LoaderFunctionArgs } from '@remix-run/node';
+import { json } from '@remix-run/node';
+import { NavLink, useLoaderData, useRouteLoaderData } from '@remix-run/react';
 
 import { requireAuthedUser } from '~/.server/auth';
-import { mgmtClient } from '~/.server/auth0';
-import { prisma } from '~/.server/db';
-import AddEmployeeForm from '~/components/AddEmployeeForm';
-import type { UserFormData } from '~/types/form/UserSubmission';
-import { userFormResolver } from '~/types/form/UserSubmission';
+
+import type { loader as parentLoader } from './schedule.shift';
 
 interface DBUser {
   id: string;
@@ -22,50 +17,28 @@ interface LoaderData {
 }
 
 export async function loader({ request }: LoaderFunctionArgs) {
+  /**
+   * Must guard child route even if parent route is already guarded
+   * as Remix calls all loaders in parallel.
+   */
   const [, dbUser] = await requireAuthedUser(request);
   return json({ dbUser });
 }
 
-export async function action({ request }: ActionFunctionArgs) {
-  const {
-    errors,
-    data,
-    receivedValues: defaultValues,
-  } = await getValidatedFormData<UserFormData>(request, userFormResolver);
+export default function ScheduleShiftView() {
+  const data = useRouteLoaderData<typeof parentLoader>(
+    'routes/schedule.coverage.ORAPI',
+  );
 
-  if (errors) return json({ errors, defaultValues });
-
-  const { email, password, given_name, family_name, phone_number } = data;
-
-  const { data: authUser } = await mgmtClient.users.create({
-    email,
-    password,
-    given_name,
-    family_name,
-    connection: 'Username-Password-Authentication',
-  });
-
-  const phoneNumber = phone_number ?? '';
-
-  await prisma.user.create({
-    data: {
-      id: authUser.user_id,
-      role: data.role,
-      phoneNumber,
-    },
-  });
-
-  return redirect('/dashboard'); // TODO: changes this once we have an employee list route
-}
-
-export default function AddEmployeeRoute() {
   const { dbUser } = useLoaderData<LoaderData>();
   const userHasAccess =
     dbUser.role === 'Manager' || dbUser.role === 'Administrator';
 
+  if (!data) throw new Error('Parent data not loaded');
+
   return (
     <>
-      <div className="flex justify-center space-x-4 mb-4">
+      <div className="flex justify-center space-x-4">
         <NavLink
           to="/dashboard"
           className="inline-flex items-center justify-center bg-white text-blue-500 font-bold uppercase text-sm px-6 py-2 rounded hover:shadow-md hover:bg-blue-600 hover:text-white transition duration-200"
@@ -111,9 +84,19 @@ export default function AddEmployeeRoute() {
         </NavLink>
       </div>
       {userHasAccess ? (
-        <div className="flex justify-center mt-4">
-          <AddEmployeeForm />
-        </div>
+        <>
+          <h1 className="text-3xl font-bold text-gray-900 mb-6 text-center">
+            Shifts
+          </h1>
+          <div className="mt-8">
+            <h4 className="text-xl font-semibold text-gray-700 mb-2">
+              RAW API RESPONSE
+            </h4>
+            <p className="font-mono bg-white p-4 rounded shadow">
+              {JSON.stringify(data, null, 2)}
+            </p>
+          </div>
+        </>
       ) : (
         <div className="mt-10 p-6 max-w-lg mx-auto bg-red-100 border-l-4 border-red-500 text-red-700">
           <h3 className="text-lg font-medium mt-0">Access Denied</h3>

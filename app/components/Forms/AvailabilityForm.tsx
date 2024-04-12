@@ -8,7 +8,7 @@ import {
   availabilityFormResolver,
   type AvailabilityFormData,
   type AvailabilityPayload,
-} from '~/types/form/AvailibilitySubmission';
+} from '~/types/form/AvailabilitySubmission';
 import { isoToDatetimeLocal } from '~/utils';
 
 interface Props {

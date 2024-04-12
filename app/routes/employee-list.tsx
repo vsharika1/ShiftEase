@@ -94,7 +94,12 @@ export default function EmployeeListDisplay() {
             >
               View Employee List
             </NavLink>
-
+            <NavLink
+              to="/schedule/shift"
+              className="inline-flex items-center justify-center bg-white text-blue-500 font-bold uppercase text-sm px-6 py-2 rounded hover:shadow-md hover:bg-blue-600 hover:text-white transition duration-200"
+            >
+              Manage Shifts
+            </NavLink>
             <NavLink
               to="/addEmployee"
               className="inline-flex items-center justify-center bg-white text-blue-500 font-bold uppercase text-sm px-6 py-2 rounded hover:shadow-md hover:bg-blue-600 hover:text-white transition duration-200"
